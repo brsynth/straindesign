@@ -51,7 +51,6 @@ def gene_ko(
 
     print('biomass id', biomass_id)
     print('target id', target_id)
-    print('flux reference', flux_reference)
 
     logging.info('Load model with Reframed')
     model = load_cbmodel(
