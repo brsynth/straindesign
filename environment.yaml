@@ -1,0 +1,6 @@
+name: rpFbaAnalysis
+channels:
+  - conda-forge
+dependencies:
+  - python
+  - rptools

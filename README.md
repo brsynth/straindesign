@@ -1,50 +1,63 @@
-# Module skeleton
+# rpFbaAnalysis
 
-This repository contains the skeleton to create, test and publish a Python module.
+[![Anaconda-Server Badge](https://anaconda.org/brsynth/TO_FILL/badges/latest_release_date.svg)](https://anaconda.org/brsynth/TO_FILL)
+[![Anaconda-Server Badge](https://anaconda.org/brsynth/TO_FILL/badges/version.svg)](https://anaconda.org/brsynth/TO_FILL)
+![Test](https://github.com/brsynth/TO_FILL/workflows/Test/badge.svg)
 
-## Create new module
+rpFbaAnalysis :
 
-Before all, a new repository has to be created.
+## Input
 
-### Download
+* **TO_FILL**: (<type>) TO_FILL
+
+## Ouput
+
+* **TO_FILL**: (<type>) TO_FILL
+
+
+## Install
+### From pip
 ```sh
-git clone https://github.com/brsynth/module.git
+[sudo] python -m pip install TO_FILL
+```
+### From Conda
+```sh
+[sudo] conda install -c brsynth TO_FILL
 ```
 
-### Customize
-```sh
-bash custom.sh
-```
-After this process, there will be some details to customise on your own. Locations will be displayed after the script ended.
+## Use
 
-## Adding code
-The fresh new code is to placed into module folder, a first empty file has been created. The code has to follow the team's guidelines (https://github.com/brsynth/Coding-Guidelines).
+### Function call from Python code
+```python
+from TO_FILL import TO_FILL
 
-## Checking
-Code checking is achieved by `flake` and `bandit` that scan (without running it) the code and highlight errors.
-
-Checking occurs automatically through GitHub actions each time some commits are pushed on branches `dev` and `master`. The workflow is defined in `.github/check.yml` file.
-
-### Check manually
-Checking can be processed locally by running:
-```sh
-cd tests
-./check-in-docker.sh
+TO_FILL
 ```
 
-## Testing
-Code testing is achieved by Python code under `tests/*.py`.
+If parameters from CLI have to be parsed, the function `build_args_parser` is available:
+```python
+from TO_FILL import build_args_parser
 
-Testing occurs automatically through GitHub actions each time some commits are pushed on branch `master`. The workflow is defined in `.github/test.yml` file.
-
-### Test manually
-Checking can be processed locally by running:
-```sh
-cd tests
-./test-in-docker.sh
+parser = buildparser()
+params = parser.parse_args()
 ```
 
-## Publishing
-Code is published on PyPi (pypi.org) and Anaconda (anaconda.org) platforms.
+### Run from CLI
+```sh
+python -m TO_FILL
+```
 
-Publishing occurs automatically through GitHub actions each time some commits related to `RELEASE` file are pushed on branch `stable`. The workflow is defined in `.github/publish.yml` file.
+
+## Authors
+
+* **TO_FILL**
+* TO_FILL
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
+
+### How to cite TO_FILL?
+Please cite:
+
+TO_FILL
