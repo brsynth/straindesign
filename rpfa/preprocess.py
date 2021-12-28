@@ -20,7 +20,7 @@ def build_model(
     target_objective: str,
     logger: logging.Logger
 ):
-    logging.info('Load model')
+    logger.info('Load model')
     model = rpSBML(
         inFile=model_path,
         logger=logger
@@ -72,7 +72,7 @@ def build_model(
         )
         return 0
 
-    logging.info('Save model in file: %s' % (output_path,))
+    logger.info('Save model in file: %s' % (output_path,))
     with open(output_path, 'w') as fod:
         model.write_to_file(fod.name)
         fod.close()

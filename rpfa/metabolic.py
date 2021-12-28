@@ -10,6 +10,7 @@ from reframed.io.sbml import load_cbmodel
 
 from mewpy.optimization import EA, set_default_engine
 from mewpy.optimization.evaluation import WYIELD, BPCY
+from mewpy.problems.genes import GKOProblem
 from mewpy.simulation import SimulationMethod, get_simulator
 from mewpy.util.io import population_to_csv
 
@@ -21,16 +22,17 @@ set_default_engine('jmetal')
 def build_flux_reference(
     model_path: str,
     biomass_id: str,
-    envcond: dict
+    envcond: dict,
+    logger: logging.Logger
 ):
-    logging.info('Load model with Reframed')
+    logger.info('Load model with Reframed')
     model = load_cbmodel(
         model_path,
         flavor='cobra'
     )
     model.set_objective({biomass_id: 1})
 
-    logging.info('Simulate flux reference')
+    logger.info('Simulate flux reference')
     simulation = get_simulator(
         model,
         envcond=envcond
@@ -47,19 +49,20 @@ def gene_ko(
     biomass_id: str,
     target_id: str,
     flux_reference: pd.Series,
+    logger: logging.Logger
 ):
 
     print('biomass id', biomass_id)
     print('target id', target_id)
 
-    logging.info('Load model with Reframed')
+    logger.info('Load model with Reframed')
     model = load_cbmodel(
         model_path,
         flavor='cobra'
     )
     model.set_objective({biomass_id: 1})
 
-    logging.info('Create evaluators and problem')
+    logger.info('Create evaluators and problem')
     evaluator_1 = BPCY(
         biomass_id,
         target_id,
@@ -69,7 +72,6 @@ def gene_ko(
         biomass_id,
         target_id
     )
-    from mewpy.problems.genes import GKOProblem
     problem = GKOProblem(
         model,
         fevaluation=[evaluator_1, evaluator_2],
@@ -78,7 +80,7 @@ def gene_ko(
         target=[target_id]
     )
 
-    logging.info('Launch simulation')
+    logger.info('Launch simulation')
     ea = EA(
         problem,
         max_generations=ITERATIONS,

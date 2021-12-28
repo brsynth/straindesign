@@ -192,7 +192,8 @@ def main():
     flux_reference = build_flux_reference(
         model_path=tmpfile.name,
         biomass_id=args.biomass_rxn_id,
-        envcond=medium
+        envcond=medium,
+        logger=logger
     )
     logger.info('Build gene ko')
     gene_ko(
@@ -200,7 +201,8 @@ def main():
         envcond=medium,
         biomass_id=args.biomass_rxn_id,
         target_id=args.target_rxn_id,
-        flux_reference=flux_reference
+        flux_reference=flux_reference,
+        logger=logger
     )
 
     # Clean up.
