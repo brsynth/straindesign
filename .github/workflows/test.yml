@@ -1,41 +1,40 @@
 # This workflow will install Python dependencies, run tests and lint with a variety of Python versions
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
 
-name: Test (full)
+name: Tests
 
 on:
 
   push:
-    branches: [ main, master ]
+    branches: [ main, master, dev ]
     paths:
-      - '**'
-      - '!RELEASE.md'
-      - '!LICENSE'
-      - '!README.md'
+      - '**.py'
   pull_request:
-    branches: [ master ]
+    branches: [ main, master ]
 
 jobs:
 
-  Functional:
+  Test:
 
-    runs-on: ubuntu-latest
-
+    runs-on: ${{ matrix.os }}-latest
     strategy:
       matrix:
-        python-version: [3.5, 3.6, 3.7, 3.8]
+        os: ["ubuntu", "macos", "windows"]
+    defaults:
+      run:
+        shell: bash -l {0}
 
     steps:
+      - name: Checkout package repository
+        uses: actions/checkout@v2
 
-    - uses: actions/checkout@v2
-
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
-      with:
-        python-version: ${{ matrix.python-version }}
-
-    - name: Test
-      run: |
-        cd tests
-        bash ./test-in-docker.sh
-#        pytest --verbose
+      - name: Deploying miniconda
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          miniconda-version: "latest"
+          environment-file: environment.yaml
+          activate-environment: test
+      - name: Building & Testing conda package
+        run: |
+          conda install -y python pytest pytest-mock
+          python -m pytest
