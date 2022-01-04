@@ -5,18 +5,18 @@ import yaml
 from setuptools import setup
 
 
-# Version
-version = ''
-with open(os.path.join('pyexchange', '_version.py')) as fid:
-    lines = fid.read().splitlines()
-    version = lines[0].split("=")[-1].strip().replace('"', '')
-
 # App name - dependencies
 env = {}
 with open('environment.yml') as fid:
     env = yaml.safe_load(fid)
 name = env['name']
 install_requires = env['dependencies']
+
+# Version
+version = ''
+with open(os.path.join(name, '_version.py')) as fid:
+    lines = fid.read().splitlines()
+    version = lines[0].split("=")[-1].strip().replace('"', '')
 
 setup(
     name=name,
