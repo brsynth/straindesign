@@ -1,6 +1,7 @@
-name: rpFbaAnalysis
+name: rptools
 channels:
   - conda-forge
 dependencies:
   - python
   - rptools
+  - mewpy

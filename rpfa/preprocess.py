@@ -82,7 +82,7 @@ def build_model(
 
 def load_non_target(
     path: str,
-    model: None,
+    model: None=None,
 ) -> List[str]:
     """Parse non target file
 

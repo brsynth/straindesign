@@ -12,10 +12,10 @@ from mewpy.optimization import EA, set_default_engine
 from mewpy.optimization.evaluation import WYIELD, BPCY
 from mewpy.problems.genes import GKOProblem
 from mewpy.simulation import SimulationMethod, get_simulator
+from mewpy.util.constants import EAConstants
 from mewpy.util.io import population_to_csv
 
 
-ITERATIONS = 50
 set_default_engine('jmetal')
 
 
@@ -33,6 +33,7 @@ def build_flux_reference(
     model.set_objective({biomass_id: 1})
 
     logger.info('Simulate flux reference')
+
     simulation = get_simulator(
         model,
         envcond=envcond
@@ -45,15 +46,16 @@ def build_flux_reference(
 
 def gene_ko(
     model_path,
+    output_path: str,
     envcond: dict,
     biomass_id: str,
     target_id: str,
     flux_reference: pd.Series,
-    logger: logging.Logger
+    logger: logging.Logger,
+    thread: int=1
 ):
-
-    print('biomass id', biomass_id)
-    print('target id', target_id)
+    # Set threads
+    EAConstants.NUM_CPUS = thread
 
     logger.info('Load model with Reframed')
     model = load_cbmodel(
@@ -83,19 +85,15 @@ def gene_ko(
     logger.info('Launch simulation')
     ea = EA(
         problem,
-        max_generations=ITERATIONS,
+        max_generations=10,
         mp=True
     )
     final_pop = ea.run()
 
-    individual = max(final_pop)
-    best = list(problem.decode(individual.candidate).keys())
-    print('Best Solution: \n{0}'.format(str(best)))
-
-    print("Simplifying and saving solutions to file")
+    logger.info("Saving solutions to file")
     population_to_csv(
         problem,
         final_pop,
-        '/opt/pathway/genes/test.csv',
-        simplify=False
+        output_path,
+        simplify=True
     )

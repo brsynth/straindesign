@@ -5,6 +5,7 @@ import argparse
 import logging
 import os
 import tempfile
+import shutil
 import sys
 
 from rpfa.preprocess import (
@@ -40,12 +41,6 @@ def main():
         type=str,
         required=True,
         help='GEM model file (SBML)'
-    )
-    parser_input.add_argument(
-        '--input-non-target-file',
-        type=str,
-        required=False,
-        help='File which contains one reaction id per line'
     )
     parser_input.add_argument(
         '--input-pathway-file',
@@ -151,10 +146,6 @@ def main():
             (args.input_model_file,)
         )
         parser.exit(1)
-    if args.input_non_target_file is not None \
-        and not os.path.isfile(args.input_non_target_file):
-        logger.error("Input non target file doesn't exist")
-        parser.exit(1)
     if args.input_pathway_file is not None \
         and not os.path.isfile(args.input_pathway_file):
         logger.error("Input pathway file doesn't exist")
@@ -169,17 +160,23 @@ def main():
 
     # Load model
     logger.info('Build model')
-    res = build_model(
-        model_path=args.input_model_file,
-        pathway_path=args.input_pathway_file,
-        output_path=tmpfile.name,
-        pathway_compartment=args.input_pathway_compartment,
-        main_objective=args.biomass_rxn_id,
-        target_objective=args.target_rxn_id,
-        logger=logger
-    )
-    if res == 0:
-        parser.exit(1)
+    if args.input_pathway_file is not None:
+        res = build_model(
+            model_path=args.input_model_file,
+            pathway_path=args.input_pathway_file,
+            output_path=tmpfile.name,
+            pathway_compartment=args.input_pathway_compartment,
+            main_objective=args.biomass_rxn_id,
+            target_objective=args.target_rxn_id,
+            logger=logger
+        )
+        if res == 0:
+            parser.exit(1)
+    else:
+        shutil.copyfile(
+            src=args.input_model_file,
+            dst=tmpfile.name
+        )
 
     # Medium
     logger.info('Build medium')
@@ -198,11 +195,13 @@ def main():
     logger.info('Build gene ko')
     gene_ko(
         model_path=tmpfile.name,
+        output_path=args.output_file,
         envcond=medium,
         biomass_id=args.biomass_rxn_id,
         target_id=args.target_rxn_id,
         flux_reference=flux_reference,
-        logger=logger
+        logger=logger,
+        thread=args.thread
     )
 
     # Clean up.
