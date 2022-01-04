@@ -11,6 +11,7 @@ from rptools.rpfba.rpFBA import (
     build_rpsbml
 )
 
+
 def build_model(
     model_path: str,
     pathway_path: str,
@@ -82,7 +83,7 @@ def build_model(
 
 def load_non_target(
     path: str,
-    model: None=None,
+    model: None = None,
 ) -> List[str]:
     """Parse non target file
 

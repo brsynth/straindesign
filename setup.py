@@ -1,64 +1,37 @@
 # coding: utf-8
-from setuptools import (
-    setup,
-    find_packages
-)
-from re import search as re_search
-from os import path as os_path
+import os
+import yaml
+
+from setuptools import setup
 
 
-## INFOS ##
-package     = 'rpfa'
-descr       = ''
-url         = 'https://github.com/brsynth/rpFbaAnalysis'
-authors     = ''
-corr_author = ''
+# Version
+version = ''
+with open(os.path.join('pyexchange', '_version.py')) as fid:
+    lines = fid.read().splitlines()
+    version = lines[0].split("=")[-1].strip().replace('"', '')
 
-## LONG DESCRIPTION
-with open(
-    os_path.join(
-        os_path.dirname(os_path.realpath(__file__)),
-        'README.md'
-    ),
-    'r',
-    encoding='utf-8'
-) as f:
-    long_description = f.read()
-
-def get_version():
-    with open(
-        os_path.join(
-            os_path.dirname(os_path.realpath(__file__)),
-            'CHANGELOG.md'
-        ),
-        'r'
-    ) as f:
-        lines = f.readlines()
-    for line in lines:
-        if line.startswith('##'):
-            from re import search
-            m = search("\[(.+)\]", line)
-            if m:
-                return m.group(1)
+# App name - dependencies
+env = {}
+with open('environment.yml') as fid:
+    env = yaml.safe_load(fid)
+name = env['name']
+install_requires = env['dependencies']
 
 setup(
-    name                          = package,
-    version                       = get_version(),
-    author                        = authors,
-    author_email                  = corr_author,
-    description                   = descr,
-    long_description              = long_description,
-    long_description_content_type = 'text/markdown',
-    url                           = url,
-    packages                      = find_packages(),
-    package_dir                   = {package: package},
-    include_package_data          = True,
-    test_suite                    = 'pytest',
-    license                       = 'MIT',
-    classifiers                   = [
+    name=name,
+    version=version,
+    author=['guillaume-gricourt'],
+    author_email=['guipagui@gmail.com'],
+    description='',
+    long_description_content_type='text/markdown',
+    url='https://github.com/brsynth/rpFbaAnalysis',
+    packages=[name],
+    include_package_data=True,
+    license='MIT',
+    classifiers=[
         'Programming Language :: Python :: 3',
         'Operating System :: OS Independent',
     ],
-    python_requires               = '>=3.7',
+    install_requires=install_requires
 )
-

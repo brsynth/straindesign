@@ -2,10 +2,6 @@ import logging
 
 import pandas as pd
 
-from typing import (
-    List
-)
-
 from reframed.io.sbml import load_cbmodel
 
 from mewpy.optimization import EA, set_default_engine
@@ -52,7 +48,7 @@ def gene_ko(
     target_id: str,
     flux_reference: pd.Series,
     logger: logging.Logger,
-    thread: int=1
+    thread: int = 1
 ):
     # Set threads
     EAConstants.NUM_CPUS = thread

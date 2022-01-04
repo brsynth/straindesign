@@ -10,11 +10,9 @@ import sys
 
 from rpfa.preprocess import (
     build_model,
-    load_non_target
 )
 from rpfa.medium import (
     load_medium,
-    build_env_condition
 )
 from rpfa.metabolic import (
     build_flux_reference,
@@ -142,12 +140,13 @@ def main():
     # Check arguments.
     if not os.path.isfile(args.input_model_file):
         logger.error(
-            "Input model file doesn't exist" %
-            (args.input_model_file,)
+            "Input model file doesn't exist: %s" % (args.input_model_file,)
         )
         parser.exit(1)
-    if args.input_pathway_file is not None \
-        and not os.path.isfile(args.input_pathway_file):
+    if (
+        args.input_pathway_file is not None and
+        not os.path.isfile(args.input_pathway_file)
+    ):
         logger.error("Input pathway file doesn't exist")
         parser.exit(1)
 
