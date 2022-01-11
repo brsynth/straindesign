@@ -81,7 +81,7 @@ def gene_ko(
     logger.info('Launch simulation')
     ea = EA(
         problem,
-        max_generations=10,
+        max_generations=100,
         mp=True
     )
     final_pop = ea.run()
