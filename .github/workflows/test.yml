@@ -20,26 +20,6 @@ jobs:
           pip install flake8
           flake8 . --count --show-source --statistics
 
-  Pytest:
-    runs-on: ${{ matrix.os }}-latest
-    strategy:
-      matrix:
-        python-version: ['3.6', '3.7', '3.8', '3.9', '3.10']
-        os: [ubuntu, macos]
-    steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v2
-        with:
-          ref: ${{ github.ref }}
-      - name: 'Set up Python'
-        uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.python-version }}
-      - name: 'Lint with flake8'
-        run: |
-          pip install pytest
-          python -m pytest
-
   Build:
     runs-on: ${{ matrix.os }}-latest
     strategy:
@@ -68,4 +48,33 @@ jobs:
           mkdir -p ${bld_path}
       - name: 'Build pip package'
         run: |
+          pip install build
           python3 -m build --outdir ${bld_path}
+
+  Pytest:
+    needs: [Build]
+    runs-on: ${{ matrix.os }}-latest
+    strategy:
+      matrix:
+        python-version: ['3.6', '3.7', '3.8', '3.9', '3.10']
+        os: [ubuntu, macos]
+    env:
+      bld_path: /tmp/build
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.ref }}
+      - name: 'Set up Python'
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: 'Build & install'
+        run: |
+          pip install build
+          python3 -m build --outdir ${bld_path}
+          pip install ${bld_path}/*.whl
+      - name: 'Run pytest'
+        run: |
+          pip install pytest
+          python -m pytest
