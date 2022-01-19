@@ -46,7 +46,7 @@ jobs:
       matrix:
         os: ["ubuntu"]
         python-version: [3.6, 3.7, 3.8, 3.9, 3.10]
-   env:
+    env:
       bld_path: /tmp/build
     defaults:
       run:
