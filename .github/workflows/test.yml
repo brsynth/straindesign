@@ -5,11 +5,7 @@ on: [push, pull_request]
 jobs:
 
   Lint:
-    runs-on: ${{ matrix.os }}-latest
-    strategy:
-      matrix:
-        python-version: [3.6, 3.7, 3.8, 3.9, 3.10]
-        os: [ubuntu, macos]
+    runs-on: ubuntu-latest
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -18,7 +14,7 @@ jobs:
       - name: 'Set up Python'
         uses: actions/setup-python@v2
         with:
-          python-version: '3.x'
+          python-version: '3'
       - name: 'Lint with flake8'
         run: |
           pip install flake8
@@ -48,8 +44,10 @@ jobs:
     runs-on: ${{ matrix.os }}-latest
     strategy:
       matrix:
-        os: ["ubuntu", "macos"]
+        os: ["ubuntu"]
         python-version: [3.6, 3.7, 3.8, 3.9, 3.10]
+   env:
+      bld_path: /tmp/build
     defaults:
       run:
         shell: bash -l {0}
@@ -62,9 +60,12 @@ jobs:
         uses: conda-incubator/setup-miniconda@v2
         with:
           miniconda-version: "latest"
-          python-version: ${{ matrix.python-version }}
           environment-file: conda.recipes/conda_build_env.yaml
-          auto-activate-base: true
-      - name: 'Build conda package'
+          activate-environment: build
+          python-version: ${{ matrix.python-version }}
+      - name: 'Set up output folder'
         run: |
-          conda build .
+          mkdir -p ${bld_path}
+      - name: 'Build pip package'
+        run: |
+          python3 -m build --outdir ${bld_path}
