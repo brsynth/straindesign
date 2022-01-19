@@ -5,7 +5,11 @@ on: [push, pull_request]
 jobs:
 
   Lint:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}-latest
+    strategy:
+      matrix:
+        python-version: [3.6, 3.7, 3.8, 3.9, 3.10]
+        os: [ubuntu, macos]
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -24,30 +28,28 @@ jobs:
     runs-on: ${{ matrix.os }}-latest
     strategy:
       matrix:
-        os: ["ubuntu", "macos", "windows"]
-        python-version: [3.7, 3.8, 3.9]
-    defaults:
-      run:
-        shell: bash -l {0}
+        python-version: [3.6, 3.7, 3.8, 3.9, 3.10]
+        os: [ubuntu, macos]
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
         with:
           ref: ${{ github.ref }}
-      - name: 'Deploying miniconda'
-        uses: conda-incubator/setup-miniconda@v2
+      - name: 'Set up Python'
+        uses: actions/setup-python@v2
         with:
-          miniconda-version: "latest"
-          environment-file: environment.yml
           python-version: ${{ matrix.python-version }}
-          auto-activate-base: true
-      - name: 'Building & Testing conda package'
+      - name: 'Lint with flake8'
         run: |
-          conda install pytest
+          pip install pytest
           python -m pytest
 
-  Check:
-    runs-on: ubuntu-latest
+  Build:
+    runs-on: ${{ matrix.os }}-latest
+    strategy:
+      matrix:
+        os: ["ubuntu", "macos"]
+        python-version: [3.6, 3.7, 3.8, 3.9, 3.10]
     defaults:
       run:
         shell: bash -l {0}
@@ -60,21 +62,9 @@ jobs:
         uses: conda-incubator/setup-miniconda@v2
         with:
           miniconda-version: "latest"
-          environment-file: conda.recipe/conda_build_env.yaml
-          activate-environment: build
-      - name: 'Updating conda'
-        run: conda update --all -y
-      - name: 'Installing make'
-        run: conda install -y make
-      - name: 'Checkout CI/CD Toolkit'
-        uses: actions/checkout@v2
-        with:
-          repository: breakthewall/cicd-toolkit
-          path: cicd-toolkit
-          persist-credentials: false
-          fetch-depth: 0
-#     - name: 'Checking package'
-#        run: |
-#          cd cicd-toolkit
-#          make check-buildenv env=check
-#          conda run -n check make check
+          python-version: ${{ matrix.python-version }}
+          environment-file: conda.recipes/conda_build_env.yaml
+          auto-activate-base: true
+      - name: 'Build conda package'
+        run: |
+          conda build .
