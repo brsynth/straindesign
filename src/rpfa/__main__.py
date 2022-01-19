@@ -4,19 +4,19 @@
 import argparse
 import logging
 import os
-import tempfile
-import shutil
 import sys
 
-from rpfa.preprocess import (
-    build_model,
-)
 from rpfa.medium import (
     load_medium,
+    associate_flux_env
 )
 from rpfa.metabolic import (
-    build_flux_reference,
     gene_ko
+)
+from rpfa.preprocess import (
+    build_model,
+    genes_annotate,
+    save_results
 )
 
 
@@ -47,12 +47,6 @@ def main():
         help='SBML file that contains an heterologous pathway'
     )
     parser_input.add_argument(
-        '--input-pathway-compartment',
-        type=str,
-        required=False,
-        help='Compartment in which the pathway is located'
-    )
-    parser_input.add_argument(
         '--biomass-rxn-id',
         type=str,
         required=True,
@@ -64,6 +58,13 @@ def main():
         required=False,
         help='Target reaction ID'
     )
+    parser_input.add_argument(
+        '--substrate-rxn-id',
+        type=str,
+        required=False,
+        help='Substracte reaction ID (eg. carbon source)'
+    )
+
     # Output
     parser_output = parser.add_argument_group(
         'Output'
@@ -86,16 +87,17 @@ def main():
         help='Strategy to use : ko (knocking out) or ou '
              '(over-under expressing), (default: ko)'
     )
+    parser_input.add_argument(
+        '--max-knockouts',
+        type=int,
+        default=3,
+        required=False,
+        help='Number of maximum knockouts genes allowed'
+    )
+
     # Medium
     parser_medium = parser.add_argument_group(
         'Medium'
-    )
-    parser_medium.add_argument(
-        '--medium-compartment-id',
-        type=str,
-        default='MNXC2',
-        help='Model compartiment id corresponding '
-             'to the extra-cellular compartment'
     )
     parser_medium.add_argument(
         '--input-medium-file',
@@ -122,6 +124,13 @@ def main():
         type=str,
         help='Log level'
     )
+    parser_input.add_argument(
+        '--email',
+        type=str,
+        required=False,
+        help='Provide your email to annotate genes id with the NCBI website'
+    )
+
 
     # Compute
     args = parser.parse_args()
@@ -154,57 +163,60 @@ def main():
         logger.debug('Create out directory: %s')
         os.makedirs(os.path.dirname(args.output_file))
 
-    # Init tmp file to store model
-    tmpfile = tempfile.NamedTemporaryFile(delete=False)
-
     # Load model
     logger.info('Build model')
-    if args.input_pathway_file is not None:
-        res = build_model(
-            model_path=args.input_model_file,
-            pathway_path=args.input_pathway_file,
-            output_path=tmpfile.name,
-            pathway_compartment=args.input_pathway_compartment,
-            main_objective=args.biomass_rxn_id,
-            target_objective=args.target_rxn_id,
-            logger=logger
-        )
-        if res == 0:
-            parser.exit(1)
-    else:
-        shutil.copyfile(
-            src=args.input_model_file,
-            dst=tmpfile.name
-        )
+    model = build_model(
+        model_path=args.input_model_file,
+        pathway_path=args.input_pathway_file,
+        biomass_id=args.biomass_rxn_id,
+        target_id=args.target_rxn_id,
+        logger=logger
+    )
+    if model is None:
+        parser.exit(1)
 
     # Medium
     logger.info('Build medium')
-    medium = load_medium(
+    envcond = load_medium(
         path=args.input_medium_file
     )
+    model = associate_flux_env(
+        model=model,
+        envcond=envcond
+    )
+    if model is None:
+        parser.exit(1)
 
     # Simulation
-    logger.info('Build reference')
-    flux_reference = build_flux_reference(
-        model_path=tmpfile.name,
-        biomass_id=args.biomass_rxn_id,
-        envcond=medium,
-        logger=logger
-    )
     logger.info('Build gene ko')
-    gene_ko(
-        model_path=tmpfile.name,
-        output_path=args.output_file,
-        envcond=medium,
-        biomass_id=args.biomass_rxn_id,
-        target_id=args.target_rxn_id,
-        flux_reference=flux_reference,
-        logger=logger,
-        thread=args.thread
-    )
+    res = None
+    if args.strategy == 'ko':
+        logger.info('Run GeneOpt')
+        res = gene_ko(
+            model=model,
+            output_path=args.output_file,
+            max_knockouts=args.max_knockouts,
+            biomass_id=args.biomass_rxn_id,
+            target_id=args.target_rxn_id,
+            substrate_id=args.substrate_rxn_id,
+            logger=logger,
+            thread=args.thread
+        )
 
-    # Clean up.
-    os.remove(tmpfile.name)
+    # Processing Results
+    if res is not None:
+        if args.email:
+            logger.info('Perform gene annotation')
+            res = genes_annotate(
+                df=res,
+                email=args.email
+            )
+        logger.info('Save results')
+        save_results(
+            res,
+            path=args.output_file
+        )
+
     return 0
 
 
