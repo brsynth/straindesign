@@ -24,7 +24,7 @@ jobs:
     runs-on: ${{ matrix.os }}-latest
     strategy:
       matrix:
-        python-version: [3.6, 3.7, 3.8, 3.9, 3.10]
+        python-version: ['3.6', '3.7', '3.8', '3.9', '3.10']
         os: [ubuntu, macos]
     steps:
       - name: 'Checkout'
@@ -45,7 +45,7 @@ jobs:
     strategy:
       matrix:
         os: ["ubuntu"]
-        python-version: [3.6, 3.7, 3.8, 3.9, 3.10]
+        python-version: ['3.6', '3.7', '3.8', '3.9', '3.10']
     env:
       bld_path: /tmp/build
     defaults:
