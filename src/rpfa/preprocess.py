@@ -93,7 +93,6 @@ def genes_annotate(
                             syn = rec[0].get('OtherAliases', '')
                             syn = syn.replace(',', '')
                             label = '%s=%s - %s' % (name, syn, desc)
-                        print(label)
                     cache[gene] = label
                 labels.append(cache[gene])
             labels = '(%s)' % (','.join(labels),)
