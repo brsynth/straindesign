@@ -3,7 +3,8 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - python
-  - rptools
+  - biopython
+  - cobrapy
   - pip:
-    - mewpy
+    - cameo
+  - pyyaml

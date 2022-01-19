@@ -1,0 +1,11 @@
+name: build
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - anaconda-client
+  - conda-build
+  - pytest
+  - python
+  - pyyaml

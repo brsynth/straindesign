@@ -2,8 +2,8 @@
 {% set data = load_setup_py_data() %}
 
 package:
-  name: {{ name|lower }}
-  version: {{ data['version'] }}
+  name: {{name|lower}}
+  version: {{data['version']}}
 
 source:
   path: ..
@@ -14,10 +14,16 @@ build:
 
 requirements:
   build:
+    - pip
+    - pytest
+    - python
     - pyyaml
+    - setuptools
   run:
-    - python {{ python }}
-    - rptools
+    - biopython
+    - cobra
+    - pytest
+    - python
     - pyyaml
 
 test:
@@ -33,9 +39,9 @@ test:
     - pytest -v
 
 about:
-  home: https://github.com/brsynth/{{ name|lower }}
-  summary: {{ data['description'] }}
-  license: {{ data.get('license') }}
+  home: https://github.com/brsynth/rpFbaAnalysis
+  summary: {{data['description']}}
+  license: {{data['license']}}
   license_file: LICENSE
 
 extra:

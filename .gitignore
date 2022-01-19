@@ -13,3 +13,5 @@ _exclude
 /docsource/_autosummary
 cicd-toolkit
 *.swp
+dist
+*.egg-info

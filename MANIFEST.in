@@ -1,2 +1,1 @@
-include RELEASE
-recursive-include extras *
+include environment.yml
