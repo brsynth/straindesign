@@ -24,4 +24,4 @@ def gene_ko(
         max_knockouts=max_knockouts,
         simulation_method=lmoma
     )
-    return results
+    return results.data_frame

@@ -1,4 +1,5 @@
 import ast
+import cobra
 import logging
 
 import pandas as pd
@@ -50,40 +51,54 @@ def build_model(
 
 
 def genes_annotate(
+    model: cobra.Model,
     df: pd.DataFrame,
     email: str
 ) -> pd.DataFrame:
+
     if df.empty:
         return df
+    Entrez.email = email
     cache = {}
     for ix in df.index:
         groups = df.loc[ix, 'genes']
-        groups = ast.literal_eval(groups)
-
+        try:
+            groups = ast.literal_eval(groups)
+        except Exception:
+            pass
         # Build group
-        groups = []
+        labels_groups = []
         for group in groups:
             labels = []
             for gene in group:
+                model_gene = model.genes.get_by_id(gene)
+                ncbi_gene = model_gene.annotation.get('ncbigene', '')
                 if gene not in cache.keys():
-                    hd = Entrez.esummary(db='gene', id=gene)
-                    rec = Entrez.read(
-                        hd,
-                        validate=False
-                    )
-                    rec = rec.get('DocumentSummarySet', {})
-                    rec = rec.get('DocumentSummary', [])
-                    label = gene
-                    if len(rec) > 0:
-                        name = rec[0].get('Name', '')
-                        desc = rec[0].get('Description', '')
-                        syn = rec[0].get('OtherAliases', '')
-                        label = '%s=%s - %s' % (name, syn, desc)
+                    if ncbi_gene == '':
+                        label = gene
+                    else:
+                        hd = Entrez.esummary(db='gene', id=ncbi_gene)
+                        rec = Entrez.read(
+                            hd,
+                            validate=False
+                        )
+                        rec = rec.get('DocumentSummarySet', {})
+                        rec = rec.get('DocumentSummary', [])
+                        label = gene
+                        if len(rec) > 0:
+                            name = rec[0].get('Name', '')
+                            name = name.replace(',', '')
+                            desc = rec[0].get('Description', '')
+                            desc = desc.replace(',', '')
+                            syn = rec[0].get('OtherAliases', '')
+                            syn = syn.replace(',', '')
+                            label = '%s=%s - %s' % (name, syn, desc)
+                        print(label)
                     cache[gene] = label
                 labels.append(cache[gene])
             labels = '(%s)' % (','.join(labels),)
-            groups.append(labels)
-        df.at[ix, 'genes_annotation'] = ','.join(groups)
+            labels_groups.append(labels)
+        df.at[ix, 'genes_annotation'] = ','.join(labels_groups)
     return df
 
 

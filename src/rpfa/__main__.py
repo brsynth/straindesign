@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# coding: utf8
-
 import argparse
 import logging
 import os
@@ -131,7 +128,6 @@ def main():
         help='Provide your email to annotate genes id with the NCBI website'
     )
 
-
     # Compute
     args = parser.parse_args()
 
@@ -182,7 +178,8 @@ def main():
     )
     model = associate_flux_env(
         model=model,
-        envcond=envcond
+        envcond=envcond,
+        logger=logger
     )
     if model is None:
         parser.exit(1)
@@ -194,7 +191,6 @@ def main():
         logger.info('Run GeneOpt')
         res = gene_ko(
             model=model,
-            output_path=args.output_file,
             max_knockouts=args.max_knockouts,
             biomass_id=args.biomass_rxn_id,
             target_id=args.target_rxn_id,
@@ -208,6 +204,7 @@ def main():
         if args.email:
             logger.info('Perform gene annotation')
             res = genes_annotate(
+                model=model,
                 df=res,
                 email=args.email
             )
