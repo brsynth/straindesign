@@ -1,63 +1,46 @@
 # rpFbaAnalysis
 
-[![Anaconda-Server Badge](https://anaconda.org/brsynth/TO_FILL/badges/latest_release_date.svg)](https://anaconda.org/brsynth/TO_FILL)
-[![Anaconda-Server Badge](https://anaconda.org/brsynth/TO_FILL/badges/version.svg)](https://anaconda.org/brsynth/TO_FILL)
-![Test](https://github.com/brsynth/TO_FILL/workflows/Test/badge.svg)
+## Description
+*rpFbaAnalysis* provides a cli interface to run OptGene with an heterologous pathway.
 
-rpFbaAnalysis :
+## Installation
+Download asset from the last *Releases*.  
 
-## Input
-
-* **TO_FILL**: (<type>) TO_FILL
-
-## Ouput
-
-* **TO_FILL**: (<type>) TO_FILL
-
-
-## Install
-### From pip
+* Unzip asset  
 ```sh
-[sudo] python -m pip install TO_FILL
-```
-### From Conda
+unzip <folder>
+```  
+* Install *wheel* with *pip*  
 ```sh
-[sudo] conda install -c brsynth TO_FILL
-```
+pip install <unzipped file>.whl
+``` 
 
-## Use
+## Usage
+Example: Define the best combination of genes deletion to optimize a target.
 
-### Function call from Python code
 ```python
-from TO_FILL import TO_FILL
-
-TO_FILL
+python -m rpfa \
+    [input files]
+    --input-model-file <SBML file>
+    --input-pathway-file <SBML file>
+    --input-medium-file <CSV file>
+    [input parameters]
+    --biomass-rxn-id <id reaction, str>
+    --target-rxn-id <id reaction, str>
+    --substrate-rxn-id <id reaction, str>
+    [output file]
+    --output-file <CSV file>
 ```
 
-If parameters from CLI have to be parsed, the function `build_args_parser` is available:
-```python
-from TO_FILL import build_args_parser
-
-parser = buildparser()
-params = parser.parse_args()
+## Tests
+*pytest* is installed with this package.
+```bash
+cd <repository>
+python -m pytest
 ```
-
-### Run from CLI
-```sh
-python -m TO_FILL
-```
-
 
 ## Authors
+* **Guillaume Gricourt**
 
-* **TO_FILL**
-* TO_FILL
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
-
-### How to cite TO_FILL?
-Please cite:
-
-TO_FILL
+## Licence
+Released under the MIT licence. See the LICENCE file for details.
