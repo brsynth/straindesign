@@ -4,7 +4,7 @@ channels:
   - defaults
 dependencies:
   - biopython
-  - cobrapy
+  - cobra
   - pip:
     - cameo
   - pyyaml
