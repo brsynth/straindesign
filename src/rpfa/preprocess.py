@@ -28,14 +28,15 @@ def build_model(
         )
 
     # Check if reactions are in the model
+    reactions_id = [x.id for x in model.reactions]
     logger.info('Check if main objective is in the model')
-    if model.reactions.get_by_id(biomass_id) is None:
+    if biomass_id not in reactions_id:
         logger.error(
             'Reaction not found in the model: %s' % (biomass_id,)
         )
         return None
     logger.info('Check if target reaction is in the model')
-    if model.reactions.get_by_id(target_id) is None:
+    if target_id not in reactions_id:
         logger.error(
             'Reaction not found in the model: %s' % (target_id,)
         )
