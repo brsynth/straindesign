@@ -8,7 +8,8 @@ from rpfa.medium import (
     associate_flux_env
 )
 from rpfa.metabolic import (
-    gene_ko
+    gene_ko,
+    gene_ou
 )
 from rpfa.preprocess import (
     build_model,
@@ -188,7 +189,7 @@ def main():
     logger.info('Build gene ko')
     res = None
     if args.strategy == 'ko':
-        logger.info('Run GeneOpt')
+        logger.info('Run OptGene')
         res = gene_ko(
             model=model,
             max_knockouts=args.max_knockouts,
@@ -198,10 +199,23 @@ def main():
             logger=logger,
             thread=args.thread
         )
+    elif args.strategy == 'ou':
+        logger.info('Run OptKnock')
+        res = gene_ou(
+            model=model,
+            max_knockouts=args.max_knockouts,
+            biomass_id=args.biomass_rxn_id,
+            target_id=args.target_rxn_id,
+            logger=logger,
+            thread=args.thread
+        )
 
     # Processing Results
     if res is not None:
-        if args.email:
+        if (
+            args.email and
+            args.strategy == 'ko'
+        ):
             logger.info('Perform gene annotation')
             res = genes_annotate(
                 model=model,
