@@ -43,7 +43,6 @@ class Test_functional(Main_test):
             logger=logging.getLogger()
         )
         data = model.objective.to_json()
-        
         b_ix, t_ix = 0, 0
         for ix, arg in enumerate(data['expression']['args']):
             if arg['args'][1]['name'] == 'BIOMASS_Ec_iAF1260_core_59p81M':
