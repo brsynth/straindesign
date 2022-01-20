@@ -41,7 +41,7 @@ class Test_functional(Main_test):
             lines = []
             with open(fd.name) as fid:
                 lines = fid.read().splitlines()
-            self.assertEqual(
+            self.assertGreater(
                 len(lines),
-                8
+                4
             )
