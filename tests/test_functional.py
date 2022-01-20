@@ -19,6 +19,8 @@ class Test_functional(Main_test):
         return ret
 
     def test_functional_butanol(self):
+        # Be careful: can not test gene annotation into
+        # worflows running simultaneously
         with tempfile.NamedTemporaryFile(delete=False) as fd:
             args = ['python', '-m' 'rpfa']
             args += ['--input-model-file', self.model_ecoli]
@@ -31,7 +33,6 @@ class Test_functional(Main_test):
             args += ['--max-knockouts', '3']
             args += ['--input-medium-file', self.medium_butanol]
             args += ['--thread', '1']
-            args += ['--email', 'guipagui@gmail.com']
 
             ret = Test_functional.launch(args)
             if ret.returncode > 0:
