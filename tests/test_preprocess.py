@@ -5,7 +5,6 @@ from rpfa.preprocess import (
     build_model,
 )
 
-from optlang.glpk_interface import Variable
 
 class Test_functional(Main_test):
 
