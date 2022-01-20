@@ -18,23 +18,15 @@ class Test_functional(Main_test):
             logger=logging.getLogger()
         )
         data = model.objective.to_json()
-        b_ix, t_ix = 0, 2
-        if (
-            data['expression']['args'][0]['args'][1]['name'] == 
-            'BIOMASS_Ec_iAF1260_core_59p81M'
-        ):
-            b_ix, t_ix = 2, 0
-        self.assertEqual(
-            data['expression']['args'][b_ix]['args'][1]['name'],
-            'BIOMASS_Ec_iAF1260_core_59p81M'
-        )
+        b_ix, t_ix = 0, 0
+        for ix, arg in enumerate(data['expression']['args']):
+            if arg['args'][1]['name'] == 'BIOMASS_Ec_iAF1260_core_59p81M':
+                b_ix = ix
+            if arg['args'][1]['name'] == 'EX_glc__D_e':
+                t_ix = ix
         self.assertEqual(
             data['expression']['args'][b_ix]['args'][0]['value'],
             0.5
-        )
-        self.assertEqual(
-            data['expression']['args'][t_ix]['args'][1]['name'],
-            'EX_glc__D_e'
         )
         self.assertEqual(
             data['expression']['args'][t_ix]['args'][0]['value'],
@@ -51,23 +43,16 @@ class Test_functional(Main_test):
             logger=logging.getLogger()
         )
         data = model.objective.to_json()
-        b_ix, t_ix = 0, 2
-        if (
-            data['expression']['args'][0]['args'][1]['name'] == 
-            'BIOMASS_Ec_iAF1260_core_59p81M'
-        ):
-            b_ix, t_ix = 2, 0
-        self.assertEqual(
-            data['expression']['args'][b_ix]['args'][1]['name'],
-            'BIOMASS_Ec_iAF1260_core_59p81M'
-        )
+        
+        b_ix, t_ix = 0, 0
+        for ix, arg in enumerate(data['expression']['args']):
+            if arg['args'][1]['name'] == 'BIOMASS_Ec_iAF1260_core_59p81M':
+                b_ix = ix
+            if arg['args'][1]['name'] == 'EX_1btol_e':
+                t_ix = ix
         self.assertEqual(
             data['expression']['args'][b_ix]['args'][0]['value'],
             1.0
-        )
-        self.assertEqual(
-            data['expression']['args'][t_ix]['args'][1]['name'],
-            'EX_1btol_e'
         )
         self.assertEqual(
             data['expression']['args'][t_ix]['args'][0]['value'],
