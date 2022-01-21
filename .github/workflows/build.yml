@@ -107,7 +107,7 @@ jobs:
         uses: schneegans/dynamic-badges-action@v1.1.0
         with:
           auth: ${{ secrets.GIST }}
-          gistID: 5b62753442bc7c44ae2995299575af0a
+          gistID: dcbec0ab9a7556f091c36e48a58980dd
           filename: version.json
           label: Version
           message: ${{ needs.Tag.outputs.tag }}
@@ -184,6 +184,7 @@ jobs:
           mkdir -p ${bld_path}
       - name: 'Build pip package'
         run: |
+          pip install build
           python3 -m build --outdir ${bld_path}
       - name: 'Create asset'
         run: |
