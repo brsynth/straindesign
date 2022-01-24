@@ -1,13 +1,10 @@
 name: Docker
 
-on:   
-    workflow_run:
-        workflows: [Tests]
-        types: [completed]
-        branches: [stable]
-
-env:
-  IMAGE_NAME: ghtoken_product_demo
+on:
+  workflow_run:
+    workflows: [Build]
+    types: [completed]
+    branches: [stable]
 
 jobs:
 
@@ -17,18 +14,11 @@ jobs:
       packages: write
       contents: read
     steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v2
-      - name: 'Download Artifact Package - Pip'
+      - name: 'Download Latest Pip package release'
         uses: actions/download-artifact@v2
-        with:
-          name: package-pip-artifact
-          path: ~/Downloads/Pip.zip
-      - name: 'Unzip'
         run: |
-          unzip ~/Downloads/*.zip
-          mv ~/Downloads/*whl .
-          rm -r ~/Downloads
+          wget https://github.com/${{ github.repository }}/releases/latest/download/pip.zip -O pip.zip
+          unzip pip.zip
       - name: 'Define Image name'
         run: |
           image_name=${{ github.repository }}

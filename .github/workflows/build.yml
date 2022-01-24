@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
      tag: ${{ steps.tag_label.outputs.tag }}
-     changelog: ${{ steps.tag.outputs.changelog }}
+     changelog: ${{ steps.tag_raw.outputs.changelog }}
     steps:
       - uses: actions/checkout@v2
         with:
@@ -143,7 +143,6 @@ jobs:
         env:
           GITHUB_USERNAME: guillaume-gricourt
           GITHUB_EMAIL: guipagui@gmail.com
-
       - name: 'Push changes'
         uses: ad-m/github-push-action@master
         with:
@@ -165,7 +164,7 @@ jobs:
       bld_path: /tmp/build
       asset: pip.zip
     outputs:
-      asset: ${asset}
+      asset: ${{ env.asset }}
     defaults:
       run:
         shell: bash -l {0} # activate env conda

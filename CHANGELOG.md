@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.0.7](https://github.com/brsynth/rpFbaAnalysis/tree/0.0.7) (2022-01-24)
+
+[Full Changelog](https://github.com/brsynth/rpFbaAnalysis/compare/v0.0.6...0.0.7)
+
 ## [v0.0.6](https://github.com/brsynth/rpFbaAnalysis/tree/v0.0.6) (2022-01-24)
 
 [Full Changelog](https://github.com/brsynth/rpFbaAnalysis/compare/v0.0.5...v0.0.6)
