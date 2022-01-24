@@ -12,7 +12,7 @@ jobs:
   Tag:
     runs-on: ubuntu-latest
     outputs:
-     tag: ${{ steps.tag.outputs.tag }}
+     tag: ${{ steps.tag_label.outputs.tag }}
      changelog: ${{ steps.tag.outputs.changelog }}
     steps:
       - uses: actions/checkout@v2
@@ -41,6 +41,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           release_branches: stable
           custom_tag: ${{ steps.tag_label.outputs.tag }}
+          tag_prefix:
 
   Changelog:
     runs-on: ubuntu-latest
