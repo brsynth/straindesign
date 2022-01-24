@@ -185,20 +185,12 @@ jobs:
           python3 -m build --outdir ${bld_path}
       - name: 'Create asset'
         run: |
-          echo "ls bld_path"
-          ls ${bld_path}
-          echo "ls current"
-          ls
           zip -r -j ${asset} ${bld_path}
-          echo "ls bld_path"
-          ls ${bld_path}
-          echo "ls current"
-          ls
       - name: 'Upload Artifact Package'
         uses: actions/upload-artifact@v2
         with:
           name: package-pip-artifact
-          path: ${asset}
+          path: ${{ env.asset }}
           retention-days: 1
           if-no-files-found: error
 
