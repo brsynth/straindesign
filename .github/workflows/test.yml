@@ -18,7 +18,7 @@ jobs:
           VALIDATE_ALL_CODEBASE: false
           VALIDATE_YAML: false
           VALIDATE_DOCKERFILE_HADOLINT: false
-          DEFAULT_BRANCH: ${{ github.ref }}
+          DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   Build:
