@@ -62,9 +62,9 @@ jobs:
           CHANGELOG_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gem install github_changelog_generator
-          AUTH=$(echo $GITHUB_REPOSITORY | sed -e 's/\// /g' | awk '{print "--user " $1 " --project " $2}')
-          echo $AUTH
-          github_changelog_generator $AUTH --no-unreleased
+          AUTH=$(echo "$GITHUB_REPOSITORY" | sed -e 's/\// /g' | awk '{print "--user " $1 " --project " $2}')
+          echo "$AUTH"
+          github_changelog_generator "$AUTH" --no-unreleased
       - name: 'Upload Artifact Changelog'
         uses: actions/upload-artifact@v2
         with:
@@ -88,8 +88,8 @@ jobs:
         run: |
           VERSION_PATH=$(find . -name _version.py | head -n 1)
           sed -i "2s/.*/__version__ = \"$TAG\"/" "$VERSION_PATH"
-          echo "version_path=${VERSION_PATH}" >> $GITHUB_ENV
-          VERSION_DIR=$(dirname $VERSION_PATH)
+          echo "version_path=${VERSION_PATH}" >> "$GITHUB_ENV"
+          VERSION_DIR=$(dirname "$VERSION_PATH")
           echo "::set-output name=version_dir::${VERSION_DIR}"
           echo "Version path: $VERSION_PATH"
           echo "Version dir: $VERSION_DIR"
