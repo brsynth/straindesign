@@ -76,7 +76,7 @@ jobs:
     needs: Tag
     runs-on: ubuntu-latest
     outputs:
-      version_dir: ${{ steps.update_version.outputs.version_dir }}
+      version_path: ${{ steps.update_version.outputs.version_path }}
     steps:
       - uses: actions/checkout@v2
         with:
@@ -88,16 +88,12 @@ jobs:
         run: |
           VERSION_PATH=$(find . -name _version.py | head -n 1)
           sed -i "2s/.*/__version__ = \"$TAG\"/" "$VERSION_PATH"
-          echo "version_path=${VERSION_PATH}" >> "$GITHUB_ENV"
-          VERSION_DIR=$(dirname "$VERSION_PATH")
-          echo "::set-output name=version_dir::${VERSION_DIR}"
-          echo "Version path: $VERSION_PATH"
-          echo "Version dir: $VERSION_DIR"
+          echo "::set-output name=version_path::${VERSION_PATH}"
       - name: 'Upload Artifact Version'
         uses: actions/upload-artifact@v2
         with:
           name: version-artifact
-          path: ${{ env.version_path }}
+          path: ${{ steps.update_version.outputs.version_path }}
           retention-days: 1
 
   Badge:
@@ -128,7 +124,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: version-artifact
-          path: ${{ needs.Version.outputs.version_dir }}
+          path: ${{ needs.Version.outputs.version_path }}
       - name: 'Download Artifact Changelog'
         uses: actions/download-artifact@v2
         with:
