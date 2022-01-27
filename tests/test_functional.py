@@ -37,4 +37,4 @@ class Test_functional(Main_test):
             lines = []
             with open(fd.name) as fid:
                 lines = fid.read().splitlines()
-            self.assertGreater(len(lines), 4)
+            self.assertGreater(len(lines), 1)
