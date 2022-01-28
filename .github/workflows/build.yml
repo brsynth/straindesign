@@ -75,6 +75,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       version_path: ${{ steps.update_version.outputs.version_path }}
+      version_dir: ${{ steps.update_version.outputs.version_dir }}
     steps:
       - uses: actions/checkout@v2
         with:
@@ -85,8 +86,10 @@ jobs:
           TAG: ${{ needs.Tag.outputs.tag }}
         run: |
           VERSION_PATH=$(find . -name _version.py | head -n 1)
+          VERSION_DIR=$(dirname "$VERSION_PATH")
           sed -i "2s/.*/__version__ = \"$TAG\"/" "$VERSION_PATH"
           echo "::set-output name=version_path::${VERSION_PATH}"
+          echo "::set-output name=version_dir::${VERSION_DIR}"
       - name: 'Upload Artifact Version'
         uses: actions/upload-artifact@v2
         with:
@@ -118,14 +121,14 @@ jobs:
         with:
           persist-credentials: false
           fetch-depth: 0
-      - name: 'Clean up version file'
-        run:
-          rm -f ${{ needs.Version.outputs.version_path }}
+      # - name: 'Clean up version file'
+      #  run:
+      #    rm -f ${{ needs.Version.outputs.version_path }}
       - name: 'Download Artifact Version'
         uses: actions/download-artifact@v2
         with:
           name: version-artifact
-          path: ${{ needs.Version.outputs.version_path }}
+          path: ${{ needs.Version.outputs.version_dir }}
       - name: 'Download Artifact Changelog'
         uses: actions/download-artifact@v2
         with:
