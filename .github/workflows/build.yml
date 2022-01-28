@@ -60,9 +60,10 @@ jobs:
           CHANGELOG_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gem install github_changelog_generator
-          AUTH=$(echo "$GITHUB_REPOSITORY" | sed -e 's/\// /g' | awk '{print "--user " $1 " --project " $2}')
-          echo "$AUTH"
-          github_changelog_generator "$AUTH" --no-unreleased
+          USER=$(echo "$GITHUB_REPOSITORY" | sed -e 's/\// /g' | awk '{print $1}')
+          PROJECT=$(echo "$GITHUB_REPOSITORY" | sed -e 's/\// /g' | awk '{print $2}')
+          echo "$USER $PROJECT"
+          github_changelog_generator --user "$USER" --project "$PROJECT" --no-unreleased
       - name: 'Upload Artifact Changelog'
         uses: actions/upload-artifact@v2
         with:
