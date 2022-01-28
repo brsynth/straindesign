@@ -16,3 +16,4 @@ cicd-toolkit
 dist
 *.egg-info
 *.dtd
+super-linter.log

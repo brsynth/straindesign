@@ -1,7 +1,12 @@
 # rpFbaAnalysis
 
+[![badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/guillaume-gricourt/dcbec0ab9a7556f091c36e48a58980dd/raw/version.json)](version)
+[![GitHub Super-Linter](https://github.com/brsynth/rpFbaAnalysis/workflows/Tests/badge.svg)](https://github.com/marketplace/actions/super-linter)
+[![badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/guillaume-gricourt/dcbec0ab9a7556f091c36e48a58980dd/raw/coverage.json)](code_coverage)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
 ## Description
-*rpFbaAnalysis* provides a cli interface to run OptGene with an heterologous pathway.
+*rpFbaAnalysis* provides a cli interface to run OptGene with an heterologous pathway.  
 
 ## Installation
 Download asset from the last *Releases*.  
@@ -13,7 +18,7 @@ unzip <folder>
 * Install *wheel* with *pip*  
 ```sh
 pip install <unzipped file>.whl
-``` 
+```
 
 ## Usage
 Example: Define the best combination of genes deletion to optimize a target.

@@ -1,11 +1,9 @@
 name: Build
 
 on:
-  workflow_run:
-    workflows: [Tests]
-    types: [completed]
-    branches: [stable]
-
+  push:
+    branches:
+      - stable
 
 jobs:
 
@@ -62,9 +60,9 @@ jobs:
           CHANGELOG_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gem install github_changelog_generator
-          AUTH=$(echo $GITHUB_REPOSITORY | sed -e 's/\// /g' | awk '{print "--user " $1 " --project " $2}')
-          echo $AUTH
-          github_changelog_generator $AUTH --no-unreleased
+          AUTH=$(echo "$GITHUB_REPOSITORY" | sed -e 's/\// /g' | awk '{print "--user " $1 " --project " $2}')
+          echo "$AUTH"
+          github_changelog_generator "$AUTH" --no-unreleased
       - name: 'Upload Artifact Changelog'
         uses: actions/upload-artifact@v2
         with:
@@ -76,7 +74,7 @@ jobs:
     needs: Tag
     runs-on: ubuntu-latest
     outputs:
-      version_dir: ${{ steps.update_version.outputs.version_dir }}
+      version_path: ${{ steps.update_version.outputs.version_path }}
     steps:
       - uses: actions/checkout@v2
         with:
@@ -88,16 +86,12 @@ jobs:
         run: |
           VERSION_PATH=$(find . -name _version.py | head -n 1)
           sed -i "2s/.*/__version__ = \"$TAG\"/" "$VERSION_PATH"
-          echo "version_path=${VERSION_PATH}" >> $GITHUB_ENV
-          VERSION_DIR=$(dirname $VERSION_PATH)
-          echo "::set-output name=version_dir::${VERSION_DIR}"
-          echo "Version path: $VERSION_PATH"
-          echo "Version dir: $VERSION_DIR"
+          echo "::set-output name=version_path::${VERSION_PATH}"
       - name: 'Upload Artifact Version'
         uses: actions/upload-artifact@v2
         with:
           name: version-artifact
-          path: ${{ env.version_path }}
+          path: ${{ steps.update_version.outputs.version_path }}
           retention-days: 1
 
   Badge:
@@ -128,7 +122,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: version-artifact
-          path: ${{ needs.Version.outputs.version_dir }}
+          path: ${{ needs.Version.outputs.version_path }}
       - name: 'Download Artifact Changelog'
         uses: actions/download-artifact@v2
         with:
@@ -208,3 +202,43 @@ jobs:
           tag_name: ${{ needs.Tag.outputs.tag }}
           body: ${{ needs.Tag.outputs.changelog }}
           files: ${{ needs.BuildPip.outputs.asset }}
+
+  Docker:
+    needs: [BuildPip]
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+    steps:
+      - name: 'Download Artifact Package - Pip'
+        uses: actions/download-artifact@v2
+        with:
+          name: package-pip-artifact
+      - name: 'Unzip pip artifact'
+        run: |
+          echo "list directory"
+          ls
+          unzip pip.zip
+          echo "list directory"
+          ls
+      - name: 'Define Image name'
+        run: |
+          image_name=${{ github.repository }}
+          image_name=$(echo "$image_name" | cut -f2 -d"/")
+          echo "image_name=$image_name" >> "$GITHUB_ENV"
+      - name: 'Build image'
+        run: docker build . --file Dockerfile --tag ${{ env.image_name }} --label "runnumber=${GITHUB_RUN_ID}"
+      - name: 'Log in to registry'
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+      - name: 'Push image'
+        run: |
+          IMAGE_ID=ghcr.io/${{ github.repository_owner }}/${{ env.image_name }}
+          # Change all uppercase to lowercase
+          IMAGE_ID=$(echo "$IMAGE_ID" | tr '[:upper:]' '[:lower:]')
+          # Strip git ref prefix from version
+          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+
+          echo "IMAGE_ID=$IMAGE_ID | VERSION=$VERSION"
+          docker tag ${{ env.image_name }} "${IMAGE_ID}:${VERSION}"
+          docker push "${IMAGE_ID}:${VERSION}"
