@@ -1,6 +1,6 @@
-FROM python:3
+FROM python:3.9
 
 COPY *whl /opt/
 RUN pip install --no-cache-dir /opt/*whl
 
-CMD ["python", "-m", "rpfa"]
+ENTRYPOINT ["python", "-m", "rpfa"]
