@@ -88,7 +88,7 @@ jobs:
         run: |
           VERSION_PATH=$(find . -name _version.py | head -n 1)
           VERSION_DIR=$(dirname "$VERSION_PATH")
-          sed -i "2s/.*/__version__ = \"$TAG\"/" "$VERSION_PATH"
+          sed -i "1s/.*/__version__ = \"$TAG\"/" "$VERSION_PATH"
           echo "::set-output name=version_path::${VERSION_PATH}"
           echo "::set-output name=version_dir::${VERSION_DIR}"
       - name: 'Upload Artifact Version'
@@ -122,9 +122,6 @@ jobs:
         with:
           persist-credentials: false
           fetch-depth: 0
-      # - name: 'Clean up version file'
-      #  run:
-      #    rm -f ${{ needs.Version.outputs.version_path }}
       - name: 'Download Artifact Version'
         uses: actions/download-artifact@v2
         with:
@@ -217,6 +214,10 @@ jobs:
       packages: write
       contents: read
     steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          ref: stable
       - name: 'Download Artifact Package - Pip'
         uses: actions/download-artifact@v2
         with:
