@@ -36,6 +36,21 @@ python -m rpfa \
     [output file]
     --output-file <CSV file>
 ```
+Or with docker:  
+```sh
+docker run \
+    -it \
+    --rm \
+    -v $PWD:/data \
+    rpfbaanalysis:latest \
+    --input-model /data/<SBML file> \
+    --input-pathway-file /data/<SBML file> \
+    --input-medium-file /data/<CSV file> \
+    --biomass-rxn-id <id reaction, str> \
+    --target-rxn-id <id reaction, str> \
+    --substrate-rxn-id <id reaction, str>
+    --output-file /data/<CSV file>
+```
 
 ## Tests
 *pytest* is installed with this package.
