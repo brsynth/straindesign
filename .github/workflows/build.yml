@@ -119,6 +119,9 @@ jobs:
         with:
           persist-credentials: false
           fetch-depth: 0
+      - name: 'Clean up version file'
+        run:
+          rm -f ${{ needs.Version.outputs.version_path }}
       - name: 'Download Artifact Version'
         uses: actions/download-artifact@v2
         with:
