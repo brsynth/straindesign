@@ -231,10 +231,11 @@ jobs:
       - name: 'Define Image name'
         run: |
           image_name=${{ github.repository }}
-          image_name=$(echo "$image_name" | cut -f2 -d"/")
+          image_name=$(echo "$image_name" | cut -f2 -d"/" | tr '[:upper:]' '[:lower:]')
           echo "image_name=$image_name" >> "$GITHUB_ENV"
       - name: 'Build image'
-        run: docker build . --file Dockerfile --tag ${{ env.image_name }} --label "runnumber=${GITHUB_RUN_ID}"
+        run: |
+          docker build . --file Dockerfile --tag ${{ env.image_name }} --label "runnumber=${GITHUB_RUN_ID}"
       - name: 'Log in to registry'
         run: |
           echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
