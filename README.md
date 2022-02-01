@@ -69,4 +69,5 @@ python -m pytest
 * **Guillaume Gricourt**
 
 ## Licence
-Released under the Apache-2.0 licence. See the LICENCE file for details.
+Released under the Apache-2.0 licence.  
+See the LICENCE file for details.
