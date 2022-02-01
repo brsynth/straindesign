@@ -10,6 +10,7 @@ source:
 
 build:
   number: 0
+  noarch: python
   script: {{ PYTHON }} -m pip install --no-deps --ignore-installed -vv .
 
 requirements:
@@ -21,7 +22,7 @@ requirements:
     - setuptools
   run:
     - biopython
-    - cobra
+    - cameo
     - pytest
     - python
     - pyyaml
@@ -35,13 +36,12 @@ test:
     - pytest
   commands:
     - python -m {{ name|lower }} --help
-    - cd tests
-    - pytest -v
+    - pytest
 
 about:
   home: https://github.com/brsynth/rpFbaAnalysis
-  summary: {{data['description']}}
-  license: {{data['license']}}
+  summary: Cli interface to run OptGene/OptKnock with an heterologous pathway
+  license: Apache-2.0
   license_file: LICENSE
 
 extra:

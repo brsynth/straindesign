@@ -1,3 +1,4 @@
+import os
 import subprocess
 import sys
 import tempfile
@@ -5,7 +6,7 @@ import tempfile
 from main_test import Main_test
 
 
-class Test_functional(Main_test):
+class Test_software(Main_test):
     @staticmethod
     def launch(args):
         if isinstance(args, str):
@@ -13,7 +14,7 @@ class Test_functional(Main_test):
         ret = subprocess.run(args, capture_output=True, encoding="utf8")
         return ret
 
-    def test_functional_butanol(self):
+    def test_software_butanol(self):
         # Be careful: can not test gene annotation into
         # worflows running simultaneously
         with tempfile.NamedTemporaryFile(delete=False) as fd:
@@ -29,7 +30,7 @@ class Test_functional(Main_test):
             args += ["--input-medium-file", self.medium_butanol]
             args += ["--thread", "1"]
 
-            ret = Test_functional.launch(args)
+            ret = Test_software.launch(args)
             if ret.returncode > 0:
                 print(ret.stderr)
                 print(ret.stdout)
@@ -38,3 +39,4 @@ class Test_functional(Main_test):
             with open(fd.name) as fid:
                 lines = fid.read().splitlines()
             self.assertGreater(len(lines), 1)
+        os.remove(fd.name)

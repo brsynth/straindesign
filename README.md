@@ -6,7 +6,7 @@
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 ## Description
-*rpFbaAnalysis* provides a cli interface to run OptGene with an heterologous pathway.  
+*rpFbaAnalysis* provides a cli interface to run OptGene/OptKnock with an heterologous pathway.  
 
 ## Installation
 Download asset from the last *Releases*.  
@@ -59,8 +59,14 @@ cd <repository>
 python -m pytest
 ```
 
+## Built with these main libraries
+
+* [cameo](https://github.com/biosustain/cameo) - Computer aided metabolic engineering & optimization
+* [cobrapy](https://github.com/opencobra/cobrapy) - Constraint-based modeling of metabolic networks
+* [Pandas](https://github.com/pandas-dev/pandas) - Essential dataframe object
+
 ## Authors
 * **Guillaume Gricourt**
 
 ## Licence
-Released under the MIT licence. See the LICENCE file for details.
+Released under the Apache-2.0 licence. See the LICENCE file for details.

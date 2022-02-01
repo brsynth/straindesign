@@ -1,10 +1,10 @@
 name: rpfa
 channels:
+  - bioconda
   - conda-forge
   - defaults
 dependencies:
   - biopython
-  - cobra
+  - cameo
+  - pytest
   - pyyaml
-  - pip:
-    - cameo
