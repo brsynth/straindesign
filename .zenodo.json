@@ -1,0 +1,11 @@
+{
+    "creators": [
+        {
+            "orcid": "0000-0003-0143-5535",
+            "affiliation": "Micalis Institute, INRAE, AgroParisTech, Universite Paris-Saclay, Jouy-en-Josas, France",
+            "name": "Gricourt, Guillaume"
+        }
+    ],
+    "license": "Apache-2.0",
+    "title": "rpFbaAnalysis: rpFbaAnalysis provides a cli interface to run OptGene/OptKnock with an heterologous pathway."
+}
