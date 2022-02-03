@@ -1,9 +1,11 @@
 # rpFbaAnalysis
 
 [![badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/guillaume-gricourt/dcbec0ab9a7556f091c36e48a58980dd/raw/version.json)](version)
-[![GitHub Super-Linter](https://github.com/brsynth/rpFbaAnalysis/workflows/Tests/badge.svg)](https://github.com/marketplace/actions/super-linter)
-[![badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/guillaume-gricourt/dcbec0ab9a7556f091c36e48a58980dd/raw/coverage.json)](code_coverage)
+[![DOI](https://zenodo.org/badge/436924636.svg)](https://zenodo.org/badge/latestdoi/436924636)  
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![GitHub Super-Linter](https://github.com/brsynth/rpFbaAnalysis/workflows/Tests/badge.svg)](https://github.com/marketplace/actions/super-linter)
+[![badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/guillaume-gricourt/dcbec0ab9a7556f091c36e48a58980dd/raw/coverage.json)](code_coverage)  
+[![Gitter](https://badges.gitter.im/BioRetroSynth/SynBioCAD.svg)](https://gitter.im/BioRetroSynth/SynBioCAD?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 ## Description
 *rpFbaAnalysis* provides a cli interface to run OptGene/OptKnock with an heterologous pathway.  
