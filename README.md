@@ -1,6 +1,7 @@
 # rpFbaAnalysis
 
-[![badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/guillaume-gricourt/dcbec0ab9a7556f091c36e48a58980dd/raw/version.json)](version)
+[![badge](https://img.shields.io/github/v/release/brsynth/rpFbaAnalysis?display_name=tag&sort=semver)](version)
+[![Coveralls](https://img.shields.io/coveralls/github/brsynth/rpFbaAnalysis)](coveralls)
 [![DOI](https://zenodo.org/badge/436924636.svg)](https://zenodo.org/badge/latestdoi/436924636)  
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![GitHub Super-Linter](https://github.com/brsynth/rpFbaAnalysis/workflows/Tests/badge.svg)](https://github.com/marketplace/actions/super-linter)
