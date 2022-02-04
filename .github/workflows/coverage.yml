@@ -6,15 +6,23 @@ jobs:
 
   Coveralls:
     runs-on: ubuntu-latest
-    container: python:3-slim
     steps:
-    - name: 'Checkout'
-      uses: actions/checkout@v2
-    - name: Indicate completion to coveralls.io
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: |
-        pip3 install --upgrade coveralls
-        pip3 install .
-        coverage run -m pytest
-        coveralls
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+      - name: 'Set up Python'
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+      - name: 'Install Soft'
+        run: |
+          pip install .
+      - name: 'Install Deps'
+        run: |
+          pip install pytest-cov
+      - name: 'Test'
+        run: |
+          coverage run -m pytest
+      - name: 'Coveralls'
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
