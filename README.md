@@ -1,6 +1,6 @@
 # rpFbaAnalysis
 
-|   |   |
+|<!-- -->|<!-- -->|
 |---|---|
 |**Version**|[![Github Version](https://img.shields.io/github/v/release/brsynth/rpFbaAnalysis?display_name=tag&sort=semver)](version) [![Conda Version](https://img.shields.io/conda/vn/bioconda/rpfa.svg)](https://anaconda.org/bioconda/rpfa)|
 |**Tests**|[![GitHub Super-Linter](https://github.com/brsynth/rpFbaAnalysis/workflows/Tests/badge.svg)](https://github.com/marketplace/actions/super-linter) [![Coverage](https://img.shields.io/coveralls/github/brsynth/rpFbaAnalysis)](coveralls)|
