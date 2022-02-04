@@ -1,16 +1,25 @@
 # rpFbaAnalysis
 
-[![badge](https://img.shields.io/github/v/release/brsynth/rpFbaAnalysis?display_name=tag&sort=semver)](version)
-[![Coveralls](https://img.shields.io/coveralls/github/brsynth/rpFbaAnalysis)](coveralls)
-[![DOI](https://zenodo.org/badge/436924636.svg)](https://zenodo.org/badge/latestdoi/436924636)  
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Github Version](https://img.shields.io/github/v/release/brsynth/rpFbaAnalysis?display_name=tag&sort=semver)](version)
+[![Conda Version](https://img.shields.io/conda/vn/bioconda/rpfa.svg)](https://anaconda.org/bioconda/rpfa)  
 [![GitHub Super-Linter](https://github.com/brsynth/rpFbaAnalysis/workflows/Tests/badge.svg)](https://github.com/marketplace/actions/super-linter)
-[![badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/guillaume-gricourt/dcbec0ab9a7556f091c36e48a58980dd/raw/coverage.json)](code_coverage)  
+[![Coverage](https://img.shields.io/coveralls/github/brsynth/rpFbaAnalysis)](coveralls)  
 [![Conda Recipe](https://img.shields.io/badge/recipe-rpfa-green.svg)](https://anaconda.org/bioconda/rpfa)
 [![Conda Downloads](https://img.shields.io/conda/dn/bioconda/rpfa.svg)](https://anaconda.org/bioconda/rpfa)
-[![Conda Version](https://img.shields.io/conda/vn/bioconda/rpfa.svg)](https://anaconda.org/bioconda/rpfa)
 [![Conda Platforms](https://img.shields.io/conda/pn/bioconda/rpfa.svg)](https://anaconda.org/bioconda/rpfa)  
+[![License](https://img.shields.io/github/license/brsynth/rpFbaAnalysis/rpfa.svg)](license)
+[![DOI](https://zenodo.org/badge/436924636.svg)](https://zenodo.org/badge/latestdoi/436924636)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![Gitter](https://badges.gitter.im/BioRetroSynth/SynBioCAD.svg)](https://gitter.im/BioRetroSynth/SynBioCAD?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+
+
+| | |
+|:---:|---|
+|**Version**|[![Github Version](https://img.shields.io/github/v/release/brsynth/rpFbaAnalysis?display_name=tag&sort=semver)](version) [![Conda Version](https://img.shields.io/conda/vn/bioconda/rpfa.svg)](https://anaconda.org/bioconda/rpfa)|
+|**Tests**|[![GitHub Super-Linter](https://github.com/brsynth/rpFbaAnalysis/workflows/Tests/badge.svg)](https://github.com/marketplace/actions/super-linter) [![Coverage](https://img.shields.io/coveralls/github/brsynth/rpFbaAnalysis)](coveralls)|
+|**Python channels**|[![Conda Recipe](https://img.shields.io/badge/recipe-rpfa-green.svg)](https://anaconda.org/bioconda/rpfa) [![Conda Downloads](https://img.shields.io/conda/dn/bioconda/rpfa.svg)](https://anaconda.org/bioconda/rpfa) [![Conda Platforms](https://img.shields.io/conda/pn/bioconda/rpfa.svg)](https://anaconda.org/bioconda/rpfa)|
+|**Repository**|[![License](https://img.shields.io/github/license/brsynth/rpFbaAnalysis/rpfa.svg)](license) [![DOI](https://zenodo.org/badge/436924636.svg)](https://zenodo.org/badge/latestdoi/436924636) [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black) [![Gitter](https://badges.gitter.im/BioRetroSynth/SynBioCAD.svg)](https://gitter.im/BioRetroSynth/SynBioCAD?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)|
+
 
 ## Description
 *rpFbaAnalysis* provides a cli interface to run OptGene/OptKnock with an heterologous pathway.  
