@@ -17,3 +17,5 @@ dist
 *.egg-info
 *.dtd
 super-linter.log
+.eggs
+build
