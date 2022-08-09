@@ -1,4 +1,4 @@
-name: build
+name: test
 channels:
   - bioconda
   - conda-forge
@@ -6,11 +6,10 @@ channels:
 dependencies:
   - anaconda-client
   - biopython
+  - build
   - cameo
   - cobra<0.25.0
-  - conda-build
-  - markupsafe==2.0.1
+  - markupsafe=2.0.1
   - pandas
   - pytest
-  - python
   - pyyaml

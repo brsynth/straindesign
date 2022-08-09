@@ -27,7 +27,7 @@ jobs:
     strategy:
       matrix:
         os: ["ubuntu"]
-        python-version: ['3.7', '3.8', '3.9']
+        python-version: ['3.8', '3.9']
     env:
       bld_path: /tmp/build
     defaults:
@@ -41,16 +41,14 @@ jobs:
       - name: 'Deploying miniconda'
         uses: conda-incubator/setup-miniconda@v2
         with:
-          miniconda-version: "latest"
+          miniconda-version: 'latest'
           environment-file: conda.recipes/conda_build_env.yaml
-          activate-environment: build
           python-version: ${{ matrix.python-version }}
       - name: 'Set up output folder'
         run: |
           mkdir -p "${bld_path}"
       - name: 'Build pip package'
         run: |
-          pip install build
           python3 -m build --outdir "${bld_path}"
 
   Pytest:
@@ -58,7 +56,7 @@ jobs:
     runs-on: ${{ matrix.os }}-latest
     strategy:
       matrix:
-        python-version: ['3.7', '3.8', '3.9']
+        python-version: ['3.8', '3.9']
         os: [ubuntu, macos]
     env:
       bld_path: /tmp/build

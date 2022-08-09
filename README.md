@@ -10,6 +10,20 @@
 
 ## Installation
 
+### Conda
+
+```sh
+conda install -c bioconda rpfbagr
+```
+
+### Docker
+
+```sh
+docker pull ghcr.io/brsynth/rpfbagr:<release version>
+```
+
+### Pip
+
 Download asset from the last *Releases*.  
 
 * Unzip asset  
