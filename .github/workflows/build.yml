@@ -98,20 +98,6 @@ jobs:
           path: ${{ steps.update_version.outputs.version_path }}
           retention-days: 1
 
-  Badge:
-    needs: Tag
-    runs-on: ubuntu-latest
-    steps:
-      - name: 'Badge version'
-        uses: schneegans/dynamic-badges-action@v1.1.0
-        with:
-          auth: ${{ secrets.GIST }}
-          gistID: dcbec0ab9a7556f091c36e48a58980dd
-          filename: version.json
-          label: Version
-          message: ${{ needs.Tag.outputs.tag }}
-          color: green
-
   Commit:
     needs: [ Tag, Changelog, Version ]
     runs-on: ubuntu-latest
@@ -154,10 +140,7 @@ jobs:
 
   BuildPip:
     needs: Commit
-    runs-on: ${{ matrix.os }}-latest
-    strategy:
-      matrix:
-        os: [ubuntu]
+    runs-on: ubuntu-latest
     env:
       bld_path: /tmp/build
       asset: pip.zip
@@ -176,10 +159,9 @@ jobs:
         with:
           miniconda-version: "latest"
           environment-file: conda.recipes/conda_build_env.yaml
-          activate-environment: build
+          python-version: '3.9'
       - name: 'Build pip package'
         run: |
-          pip install build
           python3 -m build --outdir ${bld_path}
       - name: 'Create asset'
         run: |

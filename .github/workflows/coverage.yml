@@ -1,6 +1,9 @@
-on: ["push", "pull_request"]
-
 name: Coverage
+
+on:
+  push:
+    branches:
+      - main
 
 jobs:
 
