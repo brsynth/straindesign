@@ -1,11 +1,16 @@
 name: build
 channels:
-  - conda-forge
   - bioconda
+  - conda-forge
   - defaults
 dependencies:
   - anaconda-client
+  - biopython
+  - cameo
+  - cobra<0.25.0
   - conda-build
+  - markupsafe==2.0.1
+  - pandas
   - pytest
   - python
   - pyyaml

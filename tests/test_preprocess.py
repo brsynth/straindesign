@@ -1,7 +1,7 @@
 import logging
 
 from main_test import Main_test
-from rpfa.preprocess import build_model
+from rpfbagr.preprocess import build_model
 
 
 class Test_functional(Main_test):

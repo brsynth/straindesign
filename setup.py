@@ -8,7 +8,7 @@ version = ""
 fversion = glob.glob("**/_version.py", recursive=True)[0]
 with open(fversion) as fid:
     lines = fid.read().splitlines()
-    version = lines[0].split("=")[-1].strip().replace('"', "")
+    version = lines[1].split("=")[-1].strip().replace('"', "")
 
 # App name - dependencies
 env = {}
@@ -22,8 +22,8 @@ for package in env["dependencies"]:
         install_requires += package
     else:
         install_requires.append(package)
-description = "Perform FBA analysis to find best combination of genes \
-    to delete to maximize a target"
+description = "provides a cli interface to predict gene knockout \
+    targets with an heterologous pathway"
 
 setuptools.setup(
     name=name,
@@ -32,7 +32,7 @@ setuptools.setup(
     author_email=["guipagui@gmail.com"],
     description=description,
     long_description_content_type="text/markdown",
-    url="https://github.com/brsynth/rpFbaAnalysis",
+    url="https://github.com/brsynth/rpfbagr",
     package_dir={"": "src"},
     packages=setuptools.find_packages(where="src"),
     include_package_data=True,

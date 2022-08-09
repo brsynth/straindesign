@@ -17,6 +17,7 @@ jobs:
         env:
           VALIDATE_ALL_CODEBASE: false
           VALIDATE_YAML: false
+          VALIDATE_XML: false
           VALIDATE_DOCKERFILE_HADOLINT: false
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -77,47 +78,3 @@ jobs:
         run: |
           pip install pytest
           python -m pytest
-
-  Coverage:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: ['3.9']
-    outputs:
-      percent: ${{ steps.coverage.outputs.percent }}
-    steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v2
-        with:
-          ref: ${{ github.ref }}
-      - name: 'Set up Python'
-        uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.python-version }}
-      - name: 'Install Soft'
-        run: |
-          pip install .
-      - name: 'Install Deps'
-        run: |
-          pip install pytest-cov
-      - name: 'Run coverage'
-        id: coverage
-        run: |
-          coverage run -m pytest
-          coverage json
-          percent=$(python -c 'import json; data=json.load(open("coverage.json")); print(data["totals"]["percent_covered_display"])')
-          echo "::set-output name=percent::${percent}"
-
-  Badge:
-    needs: Coverage
-    runs-on: ubuntu-latest
-    steps:
-      - name: 'Badge version'
-        uses: schneegans/dynamic-badges-action@v1.1.0
-        with:
-          auth: ${{ secrets.GIST }}
-          gistID: dcbec0ab9a7556f091c36e48a58980dd
-          filename: coverage.json
-          label: CodeCoverage
-          message: "${{ needs.Coverage.outputs.percent }}%"
-          color: green

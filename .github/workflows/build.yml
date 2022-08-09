@@ -88,7 +88,7 @@ jobs:
         run: |
           VERSION_PATH=$(find . -name _version.py | head -n 1)
           VERSION_DIR=$(dirname "$VERSION_PATH")
-          sed -i "1s/.*/__version__ = \"$TAG\"/" "$VERSION_PATH"
+          sed -i "2s/.*/__version__ = \"$TAG\"/" "$VERSION_PATH"
           echo "::set-output name=version_path::${VERSION_PATH}"
           echo "::set-output name=version_dir::${VERSION_DIR}"
       - name: 'Upload Artifact Version'
