@@ -29,7 +29,7 @@ class Test_software(Main_test):
             args += ["--output-file-csv", fd.name]
             args += ["--strategy", "ko"]
             args += ["--max-knockouts", "3"]
-            args += ["--input-medium-file", self.medium_butanol]
+            args += ["--input-medium-file", self.medium_butanol_csv]
             args += ["--thread", "1"]
 
             ret = Test_software.launch(args)
@@ -56,7 +56,7 @@ class Test_software(Main_test):
             args += ["--output-file-csv", fd.name]
             args += ["--strategy", "ko"]
             args += ["--max-knockouts", "3"]
-            args += ["--input-medium-file", self.medium_butanol]
+            args += ["--input-medium-file", self.medium_butanol_tsv]
             args += ["--thread", "1"]
 
             ret = Test_software.launch(args)
@@ -88,7 +88,7 @@ class Test_software(Main_test):
             args += ["--output-file-tsv", fd.name]
             args += ["--strategy", "ko"]
             args += ["--max-knockouts", "3"]
-            args += ["--input-medium-file", self.medium_butanol]
+            args += ["--input-medium-file", self.medium_butanol_csv]
             args += ["--thread", "1"]
 
             ret = Test_software.launch(args)

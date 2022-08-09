@@ -82,7 +82,7 @@ def main():
     parser_medium.add_argument(
         "--input-medium-file",
         type=str,
-        help="Provide a csv file with an header as <coumpond_id>,"
+        help="Provide a csv or tsv file with an header as <coumpond_id>,"
         "<lower_bound>, <upper_bound>. This file "
         "provides information about metabolites (Metanetx Id) "
         "to add or remove.",

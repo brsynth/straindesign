@@ -6,7 +6,8 @@ class Main_test(unittest.TestCase):
     dataset_path = os.path.join(os.path.dirname(__file__), "dataset")
     # Medium.
     medium_path = os.path.join(dataset_path, "medium")
-    medium_butanol = os.path.join(medium_path, "butanol.csv")
+    medium_butanol_csv = os.path.join(medium_path, "butanol.csv")
+    medium_butanol_tsv = os.path.join(medium_path, "butanol.tsv")
     # Model.
     model_path = os.path.join(dataset_path, "model")
     model_ecoli = os.path.join(model_path, "iAF1260.xml")

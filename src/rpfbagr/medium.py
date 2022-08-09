@@ -1,3 +1,4 @@
+import csv
 import logging
 from collections import OrderedDict
 
@@ -6,8 +7,16 @@ from cobra import Model
 
 
 def load_medium(path: str) -> dict:
+    # Find delimiter.
+    with open(path) as fid:
+        dialect = csv.Sniffer().sniff(fid.readline())
+    # Load.
     df = pd.read_csv(
-        path, header=None, index_col=0, names=["reaction", "lower", "upper"]
+        path,
+        header=None,
+        index_col=0,
+        names=["reaction", "lower", "upper"],
+        sep=dialect.delimiter,
     )
     medium = df.to_dict("index")
     envcond = OrderedDict()
