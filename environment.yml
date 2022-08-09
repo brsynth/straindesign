@@ -6,5 +6,7 @@ channels:
 dependencies:
   - biopython
   - cameo
+  - cobra
+  - pandas
   - pytest
   - pyyaml
