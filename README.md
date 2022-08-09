@@ -1,29 +1,35 @@
-# rpFbaAnalysis
+# rpfbagr
 
-[![Github Version](https://img.shields.io/github/v/release/brsynth/rpFbaAnalysis?display_name=tag&sort=semver)](version) [![Conda Version](https://img.shields.io/conda/vn/bioconda/rpfa.svg)](https://anaconda.org/bioconda/rpfa)  
-[![GitHub Super-Linter](https://github.com/brsynth/rpFbaAnalysis/workflows/Tests/badge.svg)](https://github.com/marketplace/actions/super-linter) [![Coverage](https://img.shields.io/coveralls/github/brsynth/rpFbaAnalysis)](coveralls)  
-[![License](https://img.shields.io/github/license/brsynth/rpFbaAnalysis)](license) [![DOI](https://zenodo.org/badge/436924636.svg)](https://zenodo.org/badge/latestdoi/436924636) [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black) [![Gitter](https://badges.gitter.im/BioRetroSynth/SynBioCAD.svg)](https://gitter.im/BioRetroSynth/SynBioCAD?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)  
+[![Github Version](https://img.shields.io/github/v/release/brsynth/rpfbagr?display_name=tag&sort=semver)](version) [![Conda Version](https://img.shields.io/conda/vn/bioconda/rpfbagr.svg)](https://anaconda.org/bioconda/rpfbagr)  
+[![GitHub Super-Linter](https://github.com/brsynth/rpfbagr/workflows/Tests/badge.svg)](https://github.com/marketplace/actions/super-linter) [![Coverage](https://img.shields.io/coveralls/github/brsynth/rpfbagr)](coveralls)  
+[![License](https://img.shields.io/github/license/brsynth/rpfbagr)](license) [![DOI](https://zenodo.org/badge/436924636.svg)](https://zenodo.org/badge/latestdoi/436924636) [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black) [![Gitter](https://badges.gitter.im/BioRetroSynth/SynBioCAD.svg)](https://gitter.im/BioRetroSynth/SynBioCAD?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)  
 
 ## Description
-*rpFbaAnalysis* provides a cli interface to predict gene knockout targets with an heterologous pathway  
+
+*rpfbagr* provides a cli interface to predict gene knockout targets with an heterologous pathway  
 
 ## Installation
+
 Download asset from the last *Releases*.  
 
 * Unzip asset  
+
 ```sh
 unzip <folder>
 ```  
+
 * Install *wheel* with *pip*  
+
 ```sh
 pip install <unzipped file>.whl
-```
+```  
 
 ## Usage
+
 Example: Define the best combination of genes deletion to optimize a target.
 
-```python
-python -m rpfa \
+```sh
+python -m rpfbagr \
     [input files]
     --input-model-file <SBML file>
     --input-pathway-file <SBML file>
@@ -35,13 +41,15 @@ python -m rpfa \
     [output file]
     --output-file <CSV file>
 ```
+
 Or with docker:  
+
 ```sh
 docker run \
     -it \
     --rm \
     -v $PWD:/data \
-    rpfbaanalysis:latest \
+    rpfbagr:latest \
     --input-model /data/<SBML file> \
     --input-pathway-file /data/<SBML file> \
     --input-medium-file /data/<CSV file> \
@@ -52,8 +60,10 @@ docker run \
 ```
 
 ## Tests
+
 *pytest* is installed with this package.
-```bash
+
+```sh
 cd <repository>
 python -m pytest
 ```
@@ -65,7 +75,9 @@ python -m pytest
 * [Pandas](https://github.com/pandas-dev/pandas) - Essential dataframe object
 
 ## Authors
+
 * **Guillaume Gricourt**
 
 ## Licence
+
 See the LICENCE file for details.

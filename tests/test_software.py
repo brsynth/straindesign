@@ -5,7 +5,7 @@ import sys
 import tempfile
 
 from main_test import Main_test
-
+from rpfbagr._version import __app_name__
 
 class Test_software(Main_test):
     @staticmethod
@@ -19,7 +19,7 @@ class Test_software(Main_test):
         # Be careful: can not test gene annotation into
         # worflows running simultaneously
         with tempfile.NamedTemporaryFile(delete=False) as fd:
-            args = ["python", "-m" "rpfa"]
+            args = ["python", "-m", __app_name__]
             args += ["--input-model-file", self.model_ecoli_gz]
             args += ["--input-pathway-file", self.pathway_butanol]
             args += ["--biomass-rxn-id", "BIOMASS_Ec_iAF1260_core_59p81M"]
@@ -46,7 +46,7 @@ class Test_software(Main_test):
         # Be careful: can not test gene annotation into
         # worflows running simultaneously
         with tempfile.NamedTemporaryFile(delete=False) as fd:
-            args = ["python", "-m" "rpfa"]
+            args = ["python", "-m", __app_name__]
             args += ["--input-model-file", self.model_ecoli_core]
             args += ["--input-pathway-file", self.pathway_butanol]
             args += ["--biomass-rxn-id", "BIOMASS_Ecoli_core_w_GAM"]
@@ -78,7 +78,7 @@ class Test_software(Main_test):
         # Be careful: can not test gene annotation into
         # worflows running simultaneously
         with tempfile.NamedTemporaryFile(delete=False) as fd:
-            args = ["python", "-m" "rpfa"]
+            args = ["python", "-m", __app_name__]
             args += ["--input-model-file", self.model_ecoli_iml1515]
             args += ["--input-pathway-file", self.pathway_butanol]
             args += ["--biomass-rxn-id", "biomass"]

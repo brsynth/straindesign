@@ -1,4 +1,4 @@
-name: rpfa
+name: rpfbagr
 channels:
   - bioconda
   - conda-forge

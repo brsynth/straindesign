@@ -3,17 +3,17 @@ import logging
 import os
 import sys
 
-from rpfa.medium import associate_flux_env, load_medium
-from rpfa.metabolic import gene_ko, gene_ou
-from rpfa.preprocess import build_model, genes_annotate, save_results
+from rpfbagr.medium import associate_flux_env, load_medium
+from rpfbagr.metabolic import gene_ko, gene_ou
+from rpfbagr.preprocess import build_model, genes_annotate, save_results
 
 
 def main():
-    """CLI for rpFbaAnalysis"""
+    """CLI for rpfbagr"""
 
-    desc = "rpFbaAnalysis provides a cli interface to run OptGene with an heterologous pathway."
+    desc = "rpfbagr provides a cli interface to run OptGene with an heterologous pathway."
 
-    parser = argparse.ArgumentParser(description=desc, prog="python -m rpfa")
+    parser = argparse.ArgumentParser(description=desc, prog="python -m rpfbagr")
     # Input
     parser_input = parser.add_argument_group("Input")
     parser_input.add_argument(
