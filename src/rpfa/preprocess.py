@@ -87,5 +87,5 @@ def genes_annotate(model: cobra.Model, df: pd.DataFrame, email: str) -> pd.DataF
     return df
 
 
-def save_results(df: pd.DataFrame, path: str) -> None:
-    df.to_csv(path, index=False)
+def save_results(df: pd.DataFrame, path: str, sep: str = ",") -> None:
+    df.to_csv(path, index=False, sep=sep)

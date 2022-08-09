@@ -47,11 +47,16 @@ def main():
     # Output
     parser_output = parser.add_argument_group("Output")
     parser_output.add_argument(
-        "--output-file",
+        "--output-file-csv",
         type=str,
-        required=True,
-        help="output file",
+        help="output file (csv)",
     )
+    parser_output.add_argument(
+        "--output-file-tsv",
+        type=str,
+        help="output file (tsv)",
+    )
+
     # Simulation
     parser_sim = parser.add_argument_group("Simulation")
     parser_sim.add_argument(
@@ -125,9 +130,16 @@ def main():
         logger.error('Input pathway file doesn"t exist')
         parser.exit(1)
 
-    if not os.path.isdir(os.path.dirname(args.output_file)):
+    if args.output_file_csv and not os.path.isdir(
+        os.path.dirname(args.output_file_csv)
+    ):
         logger.debug("Create out directory: %s")
-        os.makedirs(os.path.dirname(args.output_file))
+        os.makedirs(os.path.dirname(args.output_file_csv))
+    if args.output_file_tsv and not os.path.isdir(
+        os.path.dirname(args.output_file_tsv)
+    ):
+        logger.debug("Create out directory: %s")
+        os.makedirs(os.path.dirname(args.output_file_tsv))
 
     # Load model
     logger.info("Build model")
@@ -179,7 +191,10 @@ def main():
             logger.info("Perform gene annotation")
             res = genes_annotate(model=model, df=res, email=args.email)
         logger.info("Save results")
-        save_results(res, path=args.output_file)
+        if args.output_file_csv:
+            save_results(res, path=args.output_file_csv, sep=",")
+        if args.output_file_tsv:
+            save_results(res, path=args.output_file_tsv, sep="\t")
 
     return 0
 
