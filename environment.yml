@@ -6,7 +6,7 @@ channels:
 dependencies:
   - biopython
   - cameo
-  - cobra<=0.25.0
+  - cobra<0.25.0
   - markupsafe==2.0.1
   - pandas
   - pytest
