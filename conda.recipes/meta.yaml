@@ -23,6 +23,8 @@ requirements:
   run:
     - biopython
     - cameo
+    - cobrapy
+    - pandas
     - pytest
     - python
     - pyyaml
@@ -40,8 +42,8 @@ test:
 
 about:
   home: https://github.com/brsynth/rpFbaAnalysis
-  summary: Cli interface to run OptGene/OptKnock with an heterologous pathway
-  license: Apache-2.0
+  summary: Cli interface to predict gene knockout targets with an heterologous pathway
+  license: MIT
   license_file: LICENSE
 
 extra:

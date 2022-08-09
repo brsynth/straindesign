@@ -6,6 +6,6 @@
             "name": "Gricourt, Guillaume"
         }
     ],
-    "license": "Apache-2.0",
-    "title": "rpFbaAnalysis: rpFbaAnalysis provides a cli interface to run OptGene/OptKnock with an heterologous pathway."
+    "license": "MIT",
+    "title": " Cli interface to predict gene knockout targets with an heterologous pathway."
 }

@@ -5,7 +5,7 @@
 [![License](https://img.shields.io/github/license/brsynth/rpFbaAnalysis)](license) [![DOI](https://zenodo.org/badge/436924636.svg)](https://zenodo.org/badge/latestdoi/436924636) [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black) [![Gitter](https://badges.gitter.im/BioRetroSynth/SynBioCAD.svg)](https://gitter.im/BioRetroSynth/SynBioCAD?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)  
 
 ## Description
-*rpFbaAnalysis* provides a cli interface to run OptGene/OptKnock with an heterologous pathway.  
+*rpFbaAnalysis* provides a cli interface to predict gene knockout targets with an heterologous pathway  
 
 ## Installation
 Download asset from the last *Releases*.  
@@ -68,5 +68,4 @@ python -m pytest
 * **Guillaume Gricourt**
 
 ## Licence
-Released under the Apache-2.0 licence.  
 See the LICENCE file for details.
