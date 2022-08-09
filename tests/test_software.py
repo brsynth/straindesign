@@ -7,6 +7,7 @@ import tempfile
 from main_test import Main_test
 from rpfbagr._version import __app_name__
 
+
 class Test_software(Main_test):
     @staticmethod
     def launch(args):

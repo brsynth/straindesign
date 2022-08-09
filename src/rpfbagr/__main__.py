@@ -11,7 +11,9 @@ from rpfbagr.preprocess import build_model, genes_annotate, save_results
 def main():
     """CLI for rpfbagr"""
 
-    desc = "rpfbagr provides a cli interface to run OptGene with an heterologous pathway."
+    desc = (
+        "rpfbagr provides a cli interface to run OptGene with an heterologous pathway."
+    )
 
     parser = argparse.ArgumentParser(description=desc, prog="python -m rpfbagr")
     # Input
