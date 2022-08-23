@@ -96,6 +96,12 @@ def main():
         help="Number of threads to use",
     )
     parser_helper.add_argument(
+        "--seed",
+        type=int,
+        default=0,
+        help="Seed",
+    )
+    parser_helper.add_argument(
         "--log-level",
         choices=["ERROR", "WARNING", "INFO", "DEBUG"],
         default="INFO",
@@ -174,6 +180,7 @@ def main():
             target_id=args.target_rxn_id,
             substrate_id=args.substrate_rxn_id,
             logger=logger,
+            seed=args.seed,
             thread=args.thread,
         )
     elif args.strategy == "ou":

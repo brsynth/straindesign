@@ -14,6 +14,7 @@ def gene_ko(
     target_id: str,
     substrate_id: str,
     logger: logging.Logger,
+    seed: int,
     thread: int = 1,
 ) -> pd.DataFrame:
     optgene = OptGene(model)
@@ -23,6 +24,7 @@ def gene_ko(
         substrate=substrate_id,
         max_knockouts=max_knockouts,
         simulation_method=lmoma,
+        seed=seed,
     )
     df = pd.DataFrame(
         columns=[
