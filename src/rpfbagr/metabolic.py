@@ -4,7 +4,7 @@ import pandas as pd
 from cameo.flux_analysis.simulation import lmoma
 from cameo.strain_design.deterministic.linear_programming import OptKnock
 from cameo.strain_design.heuristic.evolutionary_based import OptGene
-from cobra import Model
+from cobra.core.model import Model
 
 
 def gene_ko(
@@ -42,7 +42,7 @@ def gene_ko(
     try:
         df = results.data_frame
     except Exception:
-        logging.warning("An error occurred, maybe there is no solution")
+        logger.warning("An error occurred, maybe there is no solution")
     return df
 
 
@@ -73,5 +73,5 @@ def gene_ou(
     try:
         df = results.data_frame
     except Exception:
-        logging.warning("An error occurred, maybe there is no solution")
+        logger.warning("An error occurred, maybe there is no solution")
     return df

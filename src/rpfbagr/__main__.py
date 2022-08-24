@@ -2,7 +2,9 @@ import argparse
 import logging
 import os
 import sys
+import tempfile
 
+os.environ["XDG_CACHE_HOME"] = tempfile.TemporaryDirectory().name
 from rpfbagr.medium import associate_flux_env, load_medium
 from rpfbagr.metabolic import gene_ko, gene_ou
 from rpfbagr.preprocess import build_model, genes_annotate, save_results
