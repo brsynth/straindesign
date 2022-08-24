@@ -194,6 +194,10 @@ def main():
         )
     elif args.strategy == "ou":
         logger.info("Run OptKnock")
+        if args.substrate_rxn_id:
+            logger.warning("Substrate reaction will be ignored with OptKnock")
+        if args.seed:
+            logger.warning("Seed will be ignored with OptKnock")
         res = gene_ou(
             model=model,
             max_knockouts=args.max_knockouts,
