@@ -3,7 +3,7 @@ import logging
 from collections import OrderedDict
 
 import pandas as pd
-from cobra import Model
+from cobra.core.model import Model
 
 
 def load_medium(path: str) -> dict:
