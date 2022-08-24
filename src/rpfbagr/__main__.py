@@ -2,7 +2,9 @@ import argparse
 import logging
 import os
 import sys
+import tempfile
 
+os.environ["XDG_CACHE_HOME"] = tempfile.TemporaryDirectory().name
 from rpfbagr.medium import associate_flux_env, load_medium
 from rpfbagr.metabolic import gene_ko, gene_ou
 from rpfbagr.preprocess import build_model, genes_annotate, save_results
@@ -96,6 +98,18 @@ def main():
         help="Number of threads to use",
     )
     parser_helper.add_argument(
+        "--seed",
+        type=int,
+        default=0,
+        help="Seed",
+    )
+    parser_helper.add_argument(
+        "--max-time",
+        type=int,
+        help="Max time to search the best combination (minutes)",
+    )
+
+    parser_helper.add_argument(
         "--log-level",
         choices=["ERROR", "WARNING", "INFO", "DEBUG"],
         default="INFO",
@@ -173,16 +187,23 @@ def main():
             biomass_id=args.biomass_rxn_id,
             target_id=args.target_rxn_id,
             substrate_id=args.substrate_rxn_id,
+            max_time=args.max_time,
             logger=logger,
+            seed=args.seed,
             thread=args.thread,
         )
     elif args.strategy == "ou":
         logger.info("Run OptKnock")
+        if args.substrate_rxn_id:
+            logger.warning("Substrate reaction will be ignored with OptKnock")
+        if args.seed:
+            logger.warning("Seed will be ignored with OptKnock")
         res = gene_ou(
             model=model,
             max_knockouts=args.max_knockouts,
             biomass_id=args.biomass_rxn_id,
             target_id=args.target_rxn_id,
+            max_time=args.max_time,
             logger=logger,
             thread=args.thread,
         )

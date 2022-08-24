@@ -2,10 +2,10 @@ import ast
 import logging
 from typing import Dict
 
-import cobra
 import pandas as pd
 from Bio import Entrez
 from cameo import load_model
+from cobra.core.model import Model
 
 
 def build_model(
@@ -35,7 +35,7 @@ def build_model(
         logger.error("Reaction not found in the model: %s" % (target_id,))
         return None
 
-    logging.info("Set objective")
+    logger.info("Set objective")
     model.objective = {
         model.reactions.get_by_id(biomass_id): 1.0,
         model.reactions.get_by_id(target_id): 0.5,
@@ -44,7 +44,7 @@ def build_model(
     return model
 
 
-def genes_annotate(model: cobra.Model, df: pd.DataFrame, email: str) -> pd.DataFrame:
+def genes_annotate(model: Model, df: pd.DataFrame, email: str) -> pd.DataFrame:
 
     if df.empty:
         return df
