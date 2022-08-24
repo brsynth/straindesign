@@ -104,6 +104,12 @@ def main():
         help="Seed",
     )
     parser_helper.add_argument(
+        "--max-time",
+        type=int,
+        help="Max time to search the best combination (minutes)",
+    )
+
+    parser_helper.add_argument(
         "--log-level",
         choices=["ERROR", "WARNING", "INFO", "DEBUG"],
         default="INFO",
@@ -181,6 +187,7 @@ def main():
             biomass_id=args.biomass_rxn_id,
             target_id=args.target_rxn_id,
             substrate_id=args.substrate_rxn_id,
+            max_time=args.max_time,
             logger=logger,
             seed=args.seed,
             thread=args.thread,
@@ -192,6 +199,7 @@ def main():
             max_knockouts=args.max_knockouts,
             biomass_id=args.biomass_rxn_id,
             target_id=args.target_rxn_id,
+            max_time=args.max_time,
             logger=logger,
             thread=args.thread,
         )
