@@ -1,4 +1,5 @@
 import argparse
+import getpass
 import logging
 import os
 import sys
@@ -156,6 +157,18 @@ def main():
     ):
         logger.debug("Create out directory: %s")
         os.makedirs(os.path.dirname(args.output_file_tsv))
+
+    try:
+        getpass.getuser()
+    except Exception as e:
+        if args.email:
+            os.environ["USERNAME"] = args.email
+        else:
+            logger.error(str(e))
+            logger.error(
+                "A login name must be provided for Cameo with --email argument"
+            )
+            parser.exit(1)
 
     # Load model
     logger.info("Build model")
