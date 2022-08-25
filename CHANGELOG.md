@@ -1,5 +1,9 @@
 # Changelog
 
+## [2.2.1](https://github.com/brsynth/rpfbagr/tree/2.2.1) (2022-08-25)
+
+[Full Changelog](https://github.com/brsynth/rpfbagr/compare/2.2.0...2.2.1)
+
 ## [2.2.0](https://github.com/brsynth/rpfbagr/tree/2.2.0) (2022-08-24)
 
 [Full Changelog](https://github.com/brsynth/rpfbagr/compare/2.1.0...2.2.0)
