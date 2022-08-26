@@ -225,7 +225,7 @@ def main():
     if res is not None:
         if args.email and args.strategy == "ko":
             logger.info("Perform gene annotation")
-            res = genes_annotate(model=model, df=res, email=args.email)
+            res = genes_annotate(model=model, df=res, email=args.email, logger=logger)
         logger.info("Save results")
         if args.output_file_csv:
             save_results(res, path=args.output_file_csv, sep=",")
