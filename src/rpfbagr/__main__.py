@@ -123,6 +123,12 @@ def main():
         required=False,
         help="Provide your email to annotate genes id with the NCBI website",
     )
+    parser_input.add_argument(
+        "--username",
+        type=str,
+        required=False,
+        help="Required by Cameo. Fill it if the OS environment has no USERNAME value.",
+    )
 
     # Compute
     args = parser.parse_args()
@@ -161,12 +167,12 @@ def main():
     try:
         getpass.getuser()
     except Exception as e:
-        if args.email:
-            os.environ["USERNAME"] = args.email
+        if args.username:
+            os.environ["USERNAME"] = args.username
         else:
             logger.error(str(e))
             logger.error(
-                "A login name must be provided for Cameo with --email argument"
+                "A login name must be provided for Cameo with --username argument"
             )
             parser.exit(1)
 
@@ -225,7 +231,7 @@ def main():
     if res is not None:
         if args.email and args.strategy == "ko":
             logger.info("Perform gene annotation")
-            res = genes_annotate(model=model, df=res, email=args.email)
+            res = genes_annotate(model=model, df=res, email=args.email, logger=logger)
         logger.info("Save results")
         if args.output_file_csv:
             save_results(res, path=args.output_file_csv, sep=",")
