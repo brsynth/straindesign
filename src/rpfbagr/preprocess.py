@@ -1,5 +1,6 @@
 import ast
 import logging
+import time
 from typing import Dict
 
 import pandas as pd
@@ -44,10 +45,16 @@ def build_model(
     return model
 
 
-def genes_annotate(model: Model, df: pd.DataFrame, email: str) -> pd.DataFrame:
+def genes_annotate(
+    model: Model,
+    df: pd.DataFrame,
+    email: str,
+    logger: logging.Logger,
+) -> pd.DataFrame:
 
     if df.empty:
         return df
+    is_ncbi_error = False
     Entrez.email = email
     cache: Dict[str, str] = {}
     for ix in df.index:
@@ -64,26 +71,30 @@ def genes_annotate(model: Model, df: pd.DataFrame, email: str) -> pd.DataFrame:
                 model_gene = model.genes.get_by_id(gene)
                 ncbi_gene = model_gene.annotation.get("ncbigene", "")
                 if gene not in cache.keys():
-                    if ncbi_gene == "":
-                        label = gene
-                    else:
-                        hd = Entrez.esummary(db="gene", id=ncbi_gene)
-                        rec = Entrez.read(hd, validate=False)
-                        rec = rec.get("DocumentSummarySet", {})
-                        rec = rec.get("DocumentSummary", [])
-                        label = gene
-                        if len(rec) > 0:
-                            name = rec[0].get("Name", "")
-                            name = name.replace(",", "")
-                            desc = rec[0].get("Description", "")
-                            desc = desc.replace(",", "")
-                            syn = rec[0].get("OtherAliases", "")
-                            syn = syn.replace(",", "")
-                            label = "%s=%s - %s" % (name, syn, desc)
+                    label = gene
+                    if ncbi_gene != "":
+                        try:
+                            hd = Entrez.esummary(db="gene", id=ncbi_gene)
+                            rec = Entrez.read(hd, validate=False)
+                            rec = rec.get("DocumentSummarySet", {})
+                            rec = rec.get("DocumentSummary", [])
+                            if len(rec) > 0:
+                                name = rec[0].get("Name", "")
+                                name = name.replace(",", "")
+                                desc = rec[0].get("Description", "")
+                                desc = desc.replace(",", "")
+                                syn = rec[0].get("OtherAliases", "")
+                                syn = syn.replace(",", "")
+                                label = "%s=%s - %s" % (name, syn, desc)
+                            time.sleep(2)
+                        except Exception:
+                            is_ncbi_error = True
                     cache[gene] = label
                 labels.append(cache[gene])
             labels_groups.append("(%s)" % (",".join(labels),))
         df.at[ix, "genes_annotation"] = ",".join(labels_groups)
+    if is_ncbi_error:
+        logger.warning("NCBI annotation failing for some items")
     return df
 
 

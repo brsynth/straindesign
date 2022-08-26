@@ -1,11 +1,8 @@
 import argparse
-import getpass
 import logging
 import os
 import sys
-import tempfile
 
-os.environ["XDG_CACHE_HOME"] = tempfile.TemporaryDirectory().name
 from rpfbagr.medium import associate_flux_env, load_medium
 from rpfbagr.metabolic import gene_ko, gene_ou
 from rpfbagr.preprocess import build_model, genes_annotate, save_results
@@ -158,18 +155,6 @@ def main():
         logger.debug("Create out directory: %s")
         os.makedirs(os.path.dirname(args.output_file_tsv))
 
-    try:
-        getpass.getuser()
-    except Exception as e:
-        if args.email:
-            os.environ["USERNAME"] = args.email
-        else:
-            logger.error(str(e))
-            logger.error(
-                "A login name must be provided for Cameo with --email argument"
-            )
-            parser.exit(1)
-
     # Load model
     logger.info("Build model")
     model = build_model(
@@ -225,7 +210,7 @@ def main():
     if res is not None:
         if args.email and args.strategy == "ko":
             logger.info("Perform gene annotation")
-            res = genes_annotate(model=model, df=res, email=args.email)
+            res = genes_annotate(model=model, df=res, email=args.email, logger=logger)
         logger.info("Save results")
         if args.output_file_csv:
             save_results(res, path=args.output_file_csv, sep=",")
