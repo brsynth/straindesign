@@ -1,4 +1,4 @@
-name: rpfbagr
+name: straindesign
 channels:
   - bioconda
   - conda-forge

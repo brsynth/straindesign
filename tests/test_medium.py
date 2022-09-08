@@ -3,7 +3,7 @@ from collections import OrderedDict
 
 from cameo import load_model
 from main_test import Main_test
-from rpfbagr.medium import associate_flux_env, load_medium
+from straindesign.medium import associate_flux_env, load_medium
 
 
 class Test_functional(Main_test):
