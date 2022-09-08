@@ -32,7 +32,7 @@ setuptools.setup(
     author_email=["guipagui@gmail.com"],
     description=description,
     long_description_content_type="text/markdown",
-    url="https://github.com/brsynth/rpfbagr",
+    url="https://github.com/brsynth/straindesign",
     package_dir={"": "src"},
     packages=setuptools.find_packages(where="src"),
     include_package_data=True,

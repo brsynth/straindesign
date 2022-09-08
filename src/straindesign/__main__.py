@@ -3,19 +3,20 @@ import logging
 import os
 import sys
 
-from rpfbagr.medium import associate_flux_env, load_medium
-from rpfbagr.metabolic import gene_ko, gene_ou
-from rpfbagr.preprocess import build_model, genes_annotate, save_results
+from straindesign._version import __app_name__
+from straindesign.medium import associate_flux_env, load_medium
+from straindesign.metabolic import gene_ko, gene_ou
+from straindesign.preprocess import build_model, genes_annotate, save_results
 
 
 def main():
-    """CLI for rpfbagr"""
+    """CLI for StrainDesign"""
 
     desc = (
-        "rpfbagr provides a cli interface to run OptGene with an heterologous pathway."
+        __app_name__
+        + " provides a cli interface to run OptGene with an heterologous pathway."
     )
-
-    parser = argparse.ArgumentParser(description=desc, prog="python -m rpfbagr")
+    parser = argparse.ArgumentParser(description=desc, prog="python -m " + __app_name__)
     # Input
     parser_input = parser.add_argument_group("Input")
     parser_input.add_argument(

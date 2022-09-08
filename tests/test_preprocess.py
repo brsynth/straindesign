@@ -1,7 +1,7 @@
 import logging
 
 from main_test import Main_test
-from rpfbagr.preprocess import build_model
+from straindesign.preprocess import build_model
 
 
 class Test_functional(Main_test):
