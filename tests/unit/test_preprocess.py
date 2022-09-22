@@ -1,10 +1,38 @@
-import logging
+from straindesign.preprocess import (
+    build_model,
+    load_straindesign_simulate_deletion,
+)
+from tests.main_test import Main_test
 
-from main_test import Main_test
-from straindesign.preprocess import build_model
 
+class TestPreprocess(Main_test):
+    def test_load_straindesign_simulate_deletion(self):
+        # Test 1
+        genes = load_straindesign_simulate_deletion(
+            path=self.gene_butanol, strategy="yield-max"
+        )
+        self.assertEqual(genes, ["b0529", "b3919"])
+        # Test 2
+        genes = load_straindesign_simulate_deletion(
+            path=self.gene_butanol, strategy="gene-max"
+        )
+        self.assertEqual(genes, ["b3731", "b3732", "b3734", "b3735", "b3736"])
+        # Test 3
+        genes = load_straindesign_simulate_deletion(
+            path=self.gene_butanol, strategy="gene-min"
+        )
+        self.assertEqual(genes, ["b3919"])
+        # Test 4
+        genes = load_straindesign_simulate_deletion(
+            path=self.gene_empty, strategy="gene-min"
+        )
+        self.assertEqual(genes, [])
+        # Test 5
+        with self.assertRaises(ValueError):
+            load_straindesign_simulate_deletion(
+                path=self.gene_value_error, strategy="gene-min"
+            )
 
-class Test_functional(Main_test):
     def test_build_model(self):
         # Test 1
         model = build_model(
@@ -12,7 +40,6 @@ class Test_functional(Main_test):
             pathway_path=None,
             biomass_id="EX_glc__D_e",
             target_id="BIOMASS_Ec_iAF1260_core_59p81M",
-            logger=logging.getLogger(),
         )
         data = model.objective.to_json()
         b_ix, t_ix = 0, 0
@@ -31,7 +58,6 @@ class Test_functional(Main_test):
             pathway_path=self.pathway_butanol,
             biomass_id="BIOMASS_Ec_iAF1260_core_59p81M",
             target_id="EX_1btol_e",
-            logger=logging.getLogger(),
         )
         data = model.objective.to_json()
         b_ix, t_ix = 0, 0
@@ -49,7 +75,6 @@ class Test_functional(Main_test):
             pathway_path=self.pathway_butanol,
             biomass_id="test",
             target_id="EX_1btol_e",
-            logger=logging.getLogger(),
         )
         self.assertIs(model, None)
         # Test 4
@@ -58,6 +83,5 @@ class Test_functional(Main_test):
             pathway_path=self.pathway_butanol,
             biomass_id="BIOMASS_Ec_iAF1260_core_59p81M",
             target_id="test",
-            logger=logging.getLogger(),
         )
         self.assertIs(model, None)

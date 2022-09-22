@@ -1,26 +1,19 @@
 import csv
 import os
-import subprocess
 import sys
 import tempfile
 
-from main_test import Main_test
 from straindesign._version import __app_name__
+from straindesign.utils import cmd
+from tests.main_test import Main_test
 
 
-class Test_software(Main_test):
-    @staticmethod
-    def launch(args):
-        if isinstance(args, str):
-            args = args.split()
-        ret = subprocess.run(args, capture_output=True, encoding="utf8")
-        return ret
-
+class TestSimulateDeletion(Main_test):
     def test_software_butanol(self):
         # Be careful: can not test gene annotation into
         # worflows running simultaneously
         with tempfile.NamedTemporaryFile(delete=False) as fd:
-            args = ["python", "-m", __app_name__]
+            args = ["python", "-m", __app_name__, "simulate-deletion"]
             args += ["--input-model-file", self.model_ecoli_gz]
             args += ["--input-pathway-file", self.pathway_butanol]
             args += ["--biomass-rxn-id", "BIOMASS_Ec_iAF1260_core_59p81M"]
@@ -32,7 +25,7 @@ class Test_software(Main_test):
             args += ["--input-medium-file", self.medium_butanol_csv]
             args += ["--thread", "1"]
 
-            ret = Test_software.launch(args)
+            ret = cmd.run(args)
             if ret.returncode > 0:
                 print(ret.stderr)
                 print(ret.stdout)
@@ -43,11 +36,11 @@ class Test_software(Main_test):
             self.assertGreater(len(lines), 1)
         os.remove(fd.name)
 
-    def test_software_butanol_light(self):
+    def test_software_butanol_light_ko(self):
         # Be careful: can not test gene annotation into
         # worflows running simultaneously
         with tempfile.NamedTemporaryFile(delete=False) as fd:
-            args = ["python", "-m", __app_name__]
+            args = ["python", "-m", __app_name__, "simulate-deletion"]
             args += ["--input-model-file", self.model_ecoli_core]
             args += ["--input-pathway-file", self.pathway_butanol]
             args += ["--biomass-rxn-id", "BIOMASS_Ecoli_core_w_GAM"]
@@ -60,7 +53,7 @@ class Test_software(Main_test):
             args += ["--input-medium-file", self.medium_butanol_tsv]
             args += ["--thread", "1"]
 
-            ret = Test_software.launch(args)
+            ret = cmd.run(args)
             if ret.returncode > 0:
                 print(ret.stderr)
                 print(ret.stdout)
@@ -80,7 +73,7 @@ class Test_software(Main_test):
         # Be careful: can not test gene annotation into
         # worflows running simultaneously
         with tempfile.NamedTemporaryFile(delete=False) as fd:
-            args = ["python", "-m", __app_name__]
+            args = ["python", "-m", __app_name__, "simulate-deletion"]
             args += ["--input-model-file", self.model_ecoli_iml1515]
             args += ["--input-pathway-file", self.pathway_butanol]
             args += ["--biomass-rxn-id", "biomass"]
@@ -93,7 +86,7 @@ class Test_software(Main_test):
             args += ["--input-medium-file", self.medium_butanol_csv]
             args += ["--thread", "1"]
 
-            ret = Test_software.launch(args)
+            ret = cmd.run(args)
             if ret.returncode > 0:
                 print(ret.stderr)
                 print(ret.stdout)
@@ -113,7 +106,7 @@ class Test_software(Main_test):
         # Be careful: can not test gene annotation into
         # worflows running simultaneously
         with tempfile.NamedTemporaryFile(delete=False) as fd:
-            args = ["python", "-m", __app_name__]
+            args = ["python", "-m", __app_name__, "simulate-deletion"]
             args += ["--input-model-file", self.model_ecoli_gz]
             args += ["--input-pathway-file", self.pathway_butanol]
             args += ["--biomass-rxn-id", "BIOMASS_Ec_iAF1260_core_59p81M"]
@@ -126,7 +119,7 @@ class Test_software(Main_test):
             args += ["--input-medium-file", self.medium_butanol_tsv]
             args += ["--thread", "1"]
 
-            ret = Test_software.launch(args)
+            ret = cmd.run(args)
             if ret.returncode > 0:
                 print(ret.stderr)
                 print(ret.stdout)
@@ -146,7 +139,7 @@ class Test_software(Main_test):
         # Be careful: can not test gene annotation into
         # worflows running simultaneously
         with tempfile.NamedTemporaryFile(delete=False) as fd:
-            args = ["python", "-m", __app_name__]
+            args = ["python", "-m", __app_name__, "simulate-deletion"]
             args += ["--input-model-file", self.model_ecoli_gz]
             args += ["--input-pathway-file", self.pathway_butanol]
             args += ["--biomass-rxn-id", "BIOMASS_Ec_iAF1260_core_59p81M"]
@@ -158,7 +151,7 @@ class Test_software(Main_test):
             args += ["--input-medium-file", self.medium_butanol_tsv]
             args += ["--thread", "1"]
 
-            ret = Test_software.launch(args)
+            ret = cmd.run(args)
             if ret.returncode > 0:
                 print(ret.stderr)
                 print(ret.stdout)

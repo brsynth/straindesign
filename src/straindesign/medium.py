@@ -25,11 +25,11 @@ def load_medium(path: str) -> dict:
     return envcond
 
 
-def associate_flux_env(model: Model, envcond: dict, logger: logging.Logger) -> Model:
+def associate_flux_env(model: Model, envcond: dict) -> Model:
     for reaction_id, bounds in envcond.items():
         reaction = model.reactions.get_by_id(reaction_id)
         if reaction is None:
-            logger.error("Reaction: %s not found in the model" % (reaction_id,))
+            logging.error("Reaction: %s not found in the model" % (reaction_id,))
             return None
         reaction.bounds = bounds
     return model
