@@ -65,6 +65,7 @@ def _cmd_red_mod(args):
 
     # Remove genes in the model.
     logging.info("Remove genes in the model")
+    logging.info("Genes to remove from the model are: %s" % (", ".join(genes)))
     model = reduce_model(model=model, genes=genes)
 
     # Save model

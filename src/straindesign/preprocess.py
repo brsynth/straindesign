@@ -33,10 +33,15 @@ def load_straindesign_simulate_deletion(path: str, strategy: str) -> List[str]:
     if df.empty:
         logging.warning("File: %s is empty, no gene found" % (path,))
         return []
-    # Sort by yield by default
+
+    # Format df.
+    df["genes"] = df["genes"].apply(lambda x: ast.literal_eval(x))
+    df["size"] = df["genes"].apply(lambda x: len(x))
+
+    # Sort by yield by default.
     df.sort_values(
-        by=["yield", "biomass_flux", "target_flux"],
-        ascending=[False, False, False],
+        by=["yield", "size", "biomass_flux", "target_flux"],
+        ascending=[False, True, False, False],
         inplace=True,
     )
     if strategy == "gene-max":
@@ -51,12 +56,9 @@ def load_straindesign_simulate_deletion(path: str, strategy: str) -> List[str]:
             ascending=[True, False, False, False],
             inplace=True,
         )
-
-    genes_str = df.loc[0, "genes"]
-    genes = ast.literal_eval(genes_str)
-    genes = list(itertools.chain.from_iterable(genes))
-    genes = list(set(genes))
-    logging.info("Genes to remove from the model are: %s" % (", ".join(genes)))
+    df.reset_index(inplace=True, drop=True)
+    iter_genes = itertools.chain.from_iterable(df.loc[0, "genes"])
+    genes = sorted(list(set(iter_genes)))
     return genes
 
 
