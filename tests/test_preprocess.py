@@ -1,5 +1,3 @@
-import logging
-
 from main_test import Main_test
 from straindesign.preprocess import build_model
 
@@ -12,7 +10,6 @@ class Test_functional(Main_test):
             pathway_path=None,
             biomass_id="EX_glc__D_e",
             target_id="BIOMASS_Ec_iAF1260_core_59p81M",
-            logger=logging.getLogger(),
         )
         data = model.objective.to_json()
         b_ix, t_ix = 0, 0
@@ -31,7 +28,6 @@ class Test_functional(Main_test):
             pathway_path=self.pathway_butanol,
             biomass_id="BIOMASS_Ec_iAF1260_core_59p81M",
             target_id="EX_1btol_e",
-            logger=logging.getLogger(),
         )
         data = model.objective.to_json()
         b_ix, t_ix = 0, 0
@@ -49,7 +45,6 @@ class Test_functional(Main_test):
             pathway_path=self.pathway_butanol,
             biomass_id="test",
             target_id="EX_1btol_e",
-            logger=logging.getLogger(),
         )
         self.assertIs(model, None)
         # Test 4
@@ -58,6 +53,5 @@ class Test_functional(Main_test):
             pathway_path=self.pathway_butanol,
             biomass_id="BIOMASS_Ec_iAF1260_core_59p81M",
             target_id="test",
-            logger=logging.getLogger(),
         )
         self.assertIs(model, None)

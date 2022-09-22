@@ -23,7 +23,6 @@ class Test_functional(Main_test):
         associate_flux_env(
             model=model,
             envcond=medium,
-            logger=logging.getLogger(),
         )
         self.assertEqual(model.reactions.get_by_id("EX_glc__D_e").bounds, (-10.0, 10.0))
         self.assertEqual(model.reactions.get_by_id("EX_o2_e").bounds, (-5.0, 5.0))

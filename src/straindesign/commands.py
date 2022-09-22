@@ -1,13 +1,12 @@
 import argparse
 import logging
 import os
-import sys
 
 from straindesign._version import __app_name__, __version__
 from straindesign.medium import associate_flux_env, load_medium
 from straindesign.metabolic import gene_ko, gene_ou
 from straindesign.preprocess import build_model, genes_annotate, save_results
-from straindesign.utils import cmdline, log
+from straindesign.utils import cmdline
 
 AP = argparse.ArgumentParser(
     description=__app_name__ + " provides a cli interface to predict gene knockout "
@@ -22,23 +21,20 @@ def _cmd_sim_del(args):
     logging.info("Start - simulate-deletion")
     # Check arguments.
     if not os.path.isfile(args.input_model_file):
-        logging.error('Input model file doesn"t exist: %s' % (args.input_model_file,))
-        parser.exit(1)
+        cmdline.abort(
+            AP, "Input model file does not exist: %s" % (args.input_model_file,)
+        )
     if args.input_pathway_file is not None and not os.path.isfile(
         args.input_pathway_file
     ):
-        logging.error('Input pathway file doesn"t exist')
-        parser.exit(1)
-
+        cmdline.abort(AP, "Input pathway file does not exist")
     if args.output_file_csv and not os.path.isdir(
         os.path.dirname(args.output_file_csv)
     ):
-        logging.debug("Create out directory: %s")
         os.makedirs(os.path.dirname(args.output_file_csv))
     if args.output_file_tsv and not os.path.isdir(
         os.path.dirname(args.output_file_tsv)
     ):
-        logging.debug("Create out directory: %s")
         os.makedirs(os.path.dirname(args.output_file_tsv))
 
     # Load model
@@ -50,14 +46,14 @@ def _cmd_sim_del(args):
         target_id=args.target_rxn_id,
     )
     if model is None:
-        parser.exit(1)
+        cmdline.abort(AP, "An error occured when the model was loaded")
 
     # Medium
     logging.info("Build medium")
     envcond = load_medium(path=args.input_medium_file)
     model = associate_flux_env(model=model, envcond=envcond)
     if model is None:
-        parser.exit(1)
+        cmdline.abort(AP, "An error occured when the pathway was merged to the model")
 
     # Simulation
     logging.info("Build gene ko")
@@ -219,7 +215,3 @@ def print_help():
 def parse_args(args=None):
     """Parse the command line"""
     return AP.parse_args(args=args)
-
-
-if __name__ == "__main__":
-    sys.exit(main())
