@@ -15,7 +15,6 @@ def gene_ko(
     target_id: str,
     substrate_id: str,
     max_time: Optional[int],
-    logger: logging.Logger,
     seed: int,
     thread: int = 1,
 ) -> pd.DataFrame:
@@ -50,7 +49,7 @@ def gene_ko(
     try:
         df = results.data_frame
     except Exception:
-        logger.warning("An error occurred, maybe there is no solution")
+        logging.warning("An error occurred, maybe there is no solution")
     return df
 
 
@@ -60,7 +59,6 @@ def gene_ou(
     biomass_id: str,
     target_id: str,
     max_time: Optional[int],
-    logger: logging.Logger,
     thread: int = 1,
 ) -> pd.DataFrame:
     optknock = OptKnock(model, fraction_of_optimum=0.1)
@@ -88,5 +86,5 @@ def gene_ou(
     try:
         df = results.data_frame
     except Exception:
-        logger.warning("An error occurred, maybe there is no solution")
+        logging.warning("An error occurred, maybe there is no solution")
     return df

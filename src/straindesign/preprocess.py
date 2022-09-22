@@ -14,29 +14,28 @@ def build_model(
     pathway_path: str,
     biomass_id: str,
     target_id: str,
-    logger: logging.Logger,
 ):
-    logger.info("Load model")
+    logging.info("Load model")
 
     model = load_model(model_path)
     if pathway_path:
-        logger.info("Load pathway")
+        logging.info("Load pathway")
         pathway_model = load_model(pathway_path)
-        logger.info("Merge model and pathway")
+        logging.info("Merge model and pathway")
         model.merge(pathway_model, inplace=True)
 
     # Check if reactions are in the model
     reactions_id = [x.id for x in model.reactions]
-    logger.info("Check if main objective is in the model")
+    logging.info("Check if main objective is in the model")
     if biomass_id not in reactions_id:
-        logger.error("Reaction not found in the model: %s" % (biomass_id,))
+        logging.error("Reaction not found in the model: %s" % (biomass_id,))
         return None
-    logger.info("Check if target reaction is in the model")
+    logging.info("Check if target reaction is in the model")
     if target_id not in reactions_id:
-        logger.error("Reaction not found in the model: %s" % (target_id,))
+        logging.error("Reaction not found in the model: %s" % (target_id,))
         return None
 
-    logger.info("Set objective")
+    logging.info("Set objective")
     model.objective = {
         model.reactions.get_by_id(biomass_id): 1.0,
         model.reactions.get_by_id(target_id): 0.5,
@@ -49,7 +48,6 @@ def genes_annotate(
     model: Model,
     df: pd.DataFrame,
     email: str,
-    logger: logging.Logger,
 ) -> pd.DataFrame:
 
     if df.empty:
@@ -94,7 +92,7 @@ def genes_annotate(
             labels_groups.append("(%s)" % (",".join(labels),))
         df.at[ix, "genes_annotation"] = ",".join(labels_groups)
     if is_ncbi_error:
-        logger.warning("NCBI annotation failing for some items")
+        logging.warning("NCBI annotation failing for some items")
     return df
 
 

@@ -7,6 +7,7 @@ from straindesign._version import __app_name__, __version__
 from straindesign.medium import associate_flux_env, load_medium
 from straindesign.metabolic import gene_ko, gene_ou
 from straindesign.preprocess import build_model, genes_annotate, save_results
+from straindesign.utils import cmdline, log
 
 AP = argparse.ArgumentParser(
     description=__app_name__ + " provides a cli interface to predict gene knockout "
@@ -47,7 +48,6 @@ def _cmd_sim_del(args):
         pathway_path=args.input_pathway_file,
         biomass_id=args.biomass_rxn_id,
         target_id=args.target_rxn_id,
-        logging=logger,
     )
     if model is None:
         parser.exit(1)
@@ -55,7 +55,7 @@ def _cmd_sim_del(args):
     # Medium
     logging.info("Build medium")
     envcond = load_medium(path=args.input_medium_file)
-    model = associate_flux_env(model=model, envcond=envcond, logging=logger)
+    model = associate_flux_env(model=model, envcond=envcond)
     if model is None:
         parser.exit(1)
 
@@ -71,7 +71,6 @@ def _cmd_sim_del(args):
             target_id=args.target_rxn_id,
             substrate_id=args.substrate_rxn_id,
             max_time=args.max_time,
-            logging=logger,
             seed=args.seed,
             thread=args.thread,
         )
@@ -87,7 +86,6 @@ def _cmd_sim_del(args):
             biomass_id=args.biomass_rxn_id,
             target_id=args.target_rxn_id,
             max_time=args.max_time,
-            logging=logger,
             thread=args.thread,
         )
 
@@ -95,7 +93,7 @@ def _cmd_sim_del(args):
     if res is not None:
         if args.email and args.strategy == "ko":
             logging.info("Perform gene annotation")
-            res = genes_annotate(model=model, df=res, email=args.email, logging=logger)
+            res = genes_annotate(model=model, df=res, email=args.email)
         logging.info("Save results")
         if args.output_file_csv:
             save_results(res, path=args.output_file_csv, sep=",")
@@ -190,13 +188,6 @@ P_sim_del_helper.add_argument(
     "--max-time",
     type=int,
     help="Max time to search the best combination (minutes)",
-)
-P_sim_del_helper.add_argument(
-    "--log-level",
-    choices=["ERROR", "WARNING", "INFO", "DEBUG"],
-    default="INFO",
-    type=str,
-    help="Log level",
 )
 P_sim_del_helper.add_argument(
     "--email",
