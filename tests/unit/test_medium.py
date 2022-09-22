@@ -1,12 +1,11 @@
-import logging
 from collections import OrderedDict
 
 from cameo import load_model
-from main_test import Main_test
+from tests.main_test import Main_test
 from straindesign.medium import associate_flux_env, load_medium
 
 
-class Test_functional(Main_test):
+class TestMedium(Main_test):
     def test_load_medium(self):
         medium = load_medium(self.medium_butanol_csv)
         theorical_medium = OrderedDict(

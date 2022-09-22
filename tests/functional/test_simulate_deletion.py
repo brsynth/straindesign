@@ -4,18 +4,12 @@ import subprocess
 import sys
 import tempfile
 
-from main_test import Main_test
+from tests.main_test import Main_test
 from straindesign._version import __app_name__
+from straindesign.utils import cmd
 
 
-class Test_software(Main_test):
-    @staticmethod
-    def launch(args):
-        if isinstance(args, str):
-            args = args.split()
-        ret = subprocess.run(args, capture_output=True, encoding="utf8")
-        return ret
-
+class TestSimulateDeletion(Main_test):
     def test_software_butanol(self):
         # Be careful: can not test gene annotation into
         # worflows running simultaneously
@@ -32,7 +26,7 @@ class Test_software(Main_test):
             args += ["--input-medium-file", self.medium_butanol_csv]
             args += ["--thread", "1"]
 
-            ret = Test_software.launch(args)
+            ret = cmd.run(args)
             if ret.returncode > 0:
                 print(ret.stderr)
                 print(ret.stdout)
@@ -43,7 +37,7 @@ class Test_software(Main_test):
             self.assertGreater(len(lines), 1)
         os.remove(fd.name)
 
-    def test_software_butanol_light(self):
+    def test_software_butanol_light_ko(self):
         # Be careful: can not test gene annotation into
         # worflows running simultaneously
         with tempfile.NamedTemporaryFile(delete=False) as fd:
@@ -60,7 +54,7 @@ class Test_software(Main_test):
             args += ["--input-medium-file", self.medium_butanol_tsv]
             args += ["--thread", "1"]
 
-            ret = Test_software.launch(args)
+            ret = cmd.run(args)
             if ret.returncode > 0:
                 print(ret.stderr)
                 print(ret.stdout)
@@ -93,7 +87,7 @@ class Test_software(Main_test):
             args += ["--input-medium-file", self.medium_butanol_csv]
             args += ["--thread", "1"]
 
-            ret = Test_software.launch(args)
+            ret = cmd.run(args)
             if ret.returncode > 0:
                 print(ret.stderr)
                 print(ret.stdout)
@@ -126,7 +120,7 @@ class Test_software(Main_test):
             args += ["--input-medium-file", self.medium_butanol_tsv]
             args += ["--thread", "1"]
 
-            ret = Test_software.launch(args)
+            ret = cmd.run(args)
             if ret.returncode > 0:
                 print(ret.stderr)
                 print(ret.stdout)
@@ -158,7 +152,7 @@ class Test_software(Main_test):
             args += ["--input-medium-file", self.medium_butanol_tsv]
             args += ["--thread", "1"]
 
-            ret = Test_software.launch(args)
+            ret = cmd.run(args)
             if ret.returncode > 0:
                 print(ret.stderr)
                 print(ret.stdout)

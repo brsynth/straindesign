@@ -1,8 +1,8 @@
-from main_test import Main_test
+from tests.main_test import Main_test
 from straindesign.preprocess import build_model
 
 
-class Test_functional(Main_test):
+class TestPreprocess(Main_test):
     def test_build_model(self):
         # Test 1
         model = build_model(
