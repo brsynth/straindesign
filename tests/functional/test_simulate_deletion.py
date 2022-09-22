@@ -1,12 +1,11 @@
 import csv
 import os
-import subprocess
 import sys
 import tempfile
 
-from tests.main_test import Main_test
 from straindesign._version import __app_name__
 from straindesign.utils import cmd
+from tests.main_test import Main_test
 
 
 class TestSimulateDeletion(Main_test):
