@@ -1,12 +1,63 @@
 import ast
+import itertools
 import logging
 import time
-from typing import Dict
+from typing import Dict, List
 
 import pandas as pd
 from Bio import Entrez
 from cameo import load_model
 from cobra.core.model import Model
+from straindesign._version import __app_name__
+from straindesign.io import tabulate
+
+
+def load_straindesign_simulate_deletion(path: str, strategy: str) -> List[str]:
+    df = tabulate.Tabulate.from_tabulate(path=path)
+    header = [
+        "reactions",
+        "genes",
+        "size",
+        "fva_min",
+        "fva_max",
+        "target_flux",
+        "biomass_flux",
+        "yield",
+        "fitness",
+    ]
+    if df.columns.to_list() != header:
+        raise ValueError(
+            "File: %s has a header not corresponding to the output of % simulate-deletion commands"
+            % (path, __app_name__)
+        )
+    if df.empty:
+        logging.warning("File: %s is empty, no gene found" % (path,))
+        return []
+    # Sort by yield by default
+    df.sort_values(
+        by=["yield", "biomass_flux", "target_flux"],
+        ascending=[False, False, False],
+        inplace=True,
+    )
+    if strategy == "gene-max":
+        df.sort_values(
+            by=["size", "yield", "biomass_flux", "target_flux"],
+            ascending=[False, False, False, False],
+            inplace=True,
+        )
+    elif strategy == "gene-min":
+        df.sort_values(
+            by=["size", "yield", "biomass_flux", "target_flux"],
+            ascending=[True, False, False, False],
+            inplace=True,
+        )
+
+    genes_str = df.loc[0, "genes"]
+    genes = ast.literal_eval(genes_str)
+    genes = list(itertools.chain.from_iterable(genes))
+    genes = list(set(genes))
+    logging.info("Genes to remove from the model are: %s" % (", ".join(genes)))
+    return genes
 
 
 def build_model(

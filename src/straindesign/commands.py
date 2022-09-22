@@ -3,17 +3,114 @@ import logging
 import os
 
 from straindesign._version import __app_name__, __version__
+from straindesign.io import sbml
 from straindesign.medium import associate_flux_env, load_medium
-from straindesign.metabolic import gene_ko, gene_ou
-from straindesign.preprocess import build_model, genes_annotate, save_results
+from straindesign.metabolic import gene_ko, gene_ou, reduce_model
+from straindesign.preprocess import (
+    build_model,
+    genes_annotate,
+    load_straindesign_simulate_deletion,
+    save_results,
+)
 from straindesign.utils import cmdline
 
 AP = argparse.ArgumentParser(
     description=__app_name__ + " provides a cli interface to predict gene knockout "
     "targets with an heterologous pathway",
-    epilog="See online documentation: https://github.com/brsynth/straindesign",
+    epilog="See online documentation: https://github.com/brsynth/" + __app_name__,
 )
 AP_subparsers = AP.add_subparsers(help="Sub-commnands (use with -h for more info)")
+
+
+def _cmd_red_mod(args):
+    logging.info("Start - reduce-model")
+    # Check arguments.
+    if not os.path.isfile(args.input_model_file):
+        cmdline.abort(
+            AP, "Input model file does not exist: %s" % (args.input_model_file,)
+        )
+    if args.input_straindesign_file and not os.path.isfile(
+        args.input_straindesign_file
+    ):
+        cmdline.abort(
+            AP,
+            "Input %s file does not exist: %s"
+            % (__app_name__, args.input_straindesign_file),
+        )
+    if args.input_straindesign_file is None and args.input_gene_str is None:
+        cmdline.abort(
+            AP,
+            "Provide at least --input-straindesign-file or --input-genes-str to have genes to delete in the model",
+        )
+    cmdline.check_output_file(parser=AP, path=args.output_file_sbml)
+
+    # Load model.
+    logging.info("Load model")
+    model = sbml.cobra_from_sbml(path=args.input_model_file)
+
+    # Load genes.
+    logging.info("Load genes")
+    genes = []
+    if args.input_straindesign_file:
+        genes.extend(
+            load_straindesign_simulate_deletion(
+                path=args.input_straindesign_file, strategy=args.parameter_strategy_str
+            )
+        )
+    if args.input_gene_str:
+        genes.extend(args.input_gene_str)
+    genes = list(set(genes))
+    if len(genes) < 1:
+        cmdline.abort(AP, "No genes are provided to be deleted into the model")
+
+    # Remove genes in the model.
+    logging.info("Remove genes in the model")
+    model = reduce_model(model=model, genes=genes)
+
+    # Save model
+    logging.info("Write the model")
+    sbml.cobra_to_sbml(model=model, path=args.output_file_sbml)
+
+    logging.info("End - reduce-model")
+
+
+P_red_mod = AP_subparsers.add_parser("reduce-model", help=_cmd_red_mod.__doc__)
+# Input
+P_red_mod_input = P_red_mod.add_argument_group("Input")
+P_red_mod_input.add_argument(
+    "--input-model-file", type=str, required=True, help="GEM model file (SBML)"
+)
+P_red_mod_input.add_argument(
+    "--input-straindesign-file",
+    type=str,
+    help="CSV file produced by the command " + __app_name__ + " simulate-deletion",
+)
+P_red_mod_input.add_argument(
+    "--input-gene-str",
+    nargs="+",
+    help="Gene ids to delete in the model",
+)
+# Output
+P_red_mod_output = P_red_mod.add_argument_group("Output")
+P_red_mod_output.add_argument(
+    "--output-file-sbml",
+    type=str,
+    required=True,
+    help="Model output file (SBML)",
+)
+# Parameters
+P_red_mod_params = P_red_mod.add_argument_group("Parameters")
+P_red_mod_params.add_argument(
+    "--parameter-strategy-str",
+    type=str,
+    choices=["yield-max", "gene-max", "gene-min"],
+    default="yield-max",
+    help="Strategy to use when genes are provided from the args: "
+    "yiel-max keeps the maximal yield, gene-max keeps the first association of genes combining "
+    "the biggest number of genes, gene-min keeps the first association of genes combinning the "
+    "lowest number of genes",
+)
+P_red_mod.set_defaults(func=_cmd_red_mod)
 
 
 def _cmd_sim_del(args):

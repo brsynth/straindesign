@@ -25,6 +25,6 @@ def check_output_file(
     if path and not os.path.isdir(os.path.dirname(os.path.abspath(path))):
         msg = "Outdir does not exists: %s" % (path,)
     if overwrite and os.path.isfile(path):
-        msg = "Outdir does not exists: %s" % (path,)
+        msg = "File exists: %s" % (path,)
     if msg:
         abort(parser=parser, msg=msg)
