@@ -4,18 +4,18 @@ from typing import Tuple
 import cobra
 from tests.main_test import Main_test
 from straindesign._version import __app_name__
+from straindesign.io import sbml
 from straindesign.utils import cmd
+from straindesign.utils import model as utils_model
 
 
 class TestReduceModel(Main_test):
-    @classmethod
-    def count_gene_reaction(cls, path: str) -> Tuple[int, int]:
-        model = cobra.io.read_sbml_model(path)
-        return len(model.genes), len(model.reactions)
-
     def test_one(self):
         # Delete: 2 genes, 3 reactions
-        nb_gene, nb_reaction = TestReduceModel.count_gene_reaction(self.model_ecoli_gz)
+        model_ecoli = sbml.from_sbml(path=self.model_ecoli_gz)
+        nb_gene = utils_model.count_gene(model=model_ecoli)
+        nb_reaction = utils_model.count_reaction(model=model_ecoli)
+
         with tempfile.NamedTemporaryFile() as fd:
             args = ["python", "-m", __app_name__, "reduce-model"]
             args += ["--input-model-file", self.model_ecoli_gz]
@@ -36,7 +36,10 @@ class TestReduceModel(Main_test):
 
     def test_two(self):
         # Delete: 3 genes, 7 reactions
-        nb_gene, nb_reaction = TestReduceModel.count_gene_reaction(self.model_ecoli_gz)
+        model_ecoli = sbml.from_sbml(path=self.model_ecoli_gz)
+        nb_gene = utils_model.count_gene(model=model_ecoli)
+        nb_reaction = utils_model.count_reaction(model=model_ecoli)
+
         with tempfile.NamedTemporaryFile() as fd:
             args = ["python", "-m", __app_name__, "reduce-model"]
             args += ["--input-model-file", self.model_ecoli_gz]
