@@ -1,10 +1,10 @@
+import cameo
 import cobra
-from cobra.io import read_sbml_model, write_sbml_model
 
 
-def cobra_from_sbml(path: str) -> cobra.Model:
-    return read_sbml_model(path)
+def from_sbml(path: str) -> cobra.Model:
+    return cameo.load_model(path)
 
 
-def cobra_to_sbml(model: cobra.Model, path: str) -> None:
-    write_sbml_model(model, path)
+def to_sbml(model: cobra.Model, path: str) -> None:
+    cobra.io.write_sbml_model(model, path)
