@@ -46,7 +46,7 @@ def _cmd_red_mod(args):
 
     # Load model.
     logging.info("Load model")
-    model = sbml.cobra_from_sbml(path=args.input_model_file)
+    model = sbml.from_sbml(path=args.input_model_file)
 
     # Load genes.
     logging.info("Load genes")
@@ -70,7 +70,7 @@ def _cmd_red_mod(args):
 
     # Save model
     logging.info("Write the model")
-    sbml.cobra_to_sbml(model=model, path=args.output_file_sbml)
+    sbml.to_sbml(model=model, path=args.output_file_sbml)
 
     logging.info("End - reduce-model")
 
@@ -291,6 +291,77 @@ P_sim_del_helper.add_argument(
 )
 P_sim_del.set_defaults(func=_cmd_sim_del)
 
+
+# Analyzing model
+def _cmd_ana_mod(args):
+    """Analyzing model"""
+    logging.info("Start - analyzing-model")
+    # Check arguments.
+    if not os.path.isfile(args.input_model_file):
+        cmdline.abort(
+            AP, "Input model file does not exist: %s" % (args.input_model_file,)
+        )
+    cmdline.check_output_file(parser=AP, path=args.output_pareto_png)
+
+    # Load model.
+    model = sbml.from_sbml(path=args.input_model_file)
+
+    # Medium.
+    logging.info("Build medium")
+    envcond = load_medium(path=args.input_medium_file)
+    model = associate_flux_env(model=model, envcond=envcond)
+    if model is None:
+        cmdline.abort(AP, "An error occured when the pathway was merged to the model")
+
+    # Check reactions.
+    for rxn in [args.biomass_rxn_id, args.target_rxn_id]:
+        if utils_model(model=model, reaction=rxn):
+            cmdline.abort(AP, "Reaction is not found in the model: %s" % (rxn,))
+
+    # Build pareto.
+
+    "--biomass-rxn-id",
+    "--target-rxn-id",
+    "--output-pareto-png",
+
+    logging.info("End - analysing-model")
+
+
+P_ana_mod = AP_subparsers.add_parser("analyzing-model", help=_cmd_ana_mod.__doc__)
+# Input
+P_ana_mod_input = P_ana_mod.add_argument_group("Input")
+P_ana_mod_input.add_argument(
+    "--input-model-file", type=str, required=True, help="GEM model file (SBML)"
+)
+P_ana_mod_input.add_argument(
+    "--biomass-rxn-id",
+    type=str,
+    required=True,
+    help="Biomass reaction ID",
+)
+P_ana_mod_input.add_argument(
+    "--target-rxn-id",
+    type=str,
+    help="Target reaction ID",
+)
+# Output
+P_ana_mod_output = P_ana_mod.add_argument_group("Output")
+P_ana_mod_output.add_argument(
+    "--output-pareto-png",
+    type=str,
+    help="Output pareto file (PNG)",
+)
+# Parameters - Medium
+P_ana_mod_medium = P_ana_mod.add_argument_group("Medium")
+P_ana_mod_medium.add_argument(
+    "--input-medium-file",
+    type=str,
+    help="Provide a csv or tsv file with an header as <coumpond_id>,"
+    "<lower_bound>, <upper_bound>. This file "
+    "provides information about metabolites (Metanetx Id) "
+    "to add or remove.",
+)
+P_ana_mod.set_defaults(func=_cmd_ana_mod)
 
 # Version.
 def print_version(_args):

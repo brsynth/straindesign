@@ -115,3 +115,12 @@ def gene_ou(
     except Exception:
         logging.warning("An error occurred, maybe there is no solution")
     return df
+
+
+def pareto(model: cobra.Model, biomass_rxn_id: str, target_rxn_id: str) -> pd.DataFrame:
+    result = cameo.phenotypic_phase_plane(
+        model,
+        variables=[model.reactions.get_by_id(biomass_rxn_id)],
+        objective=model.reactions.get_by_id(target_rxn_id),
+    )
+    return result
