@@ -1,6 +1,4 @@
-import csv
 import imghdr
-import os
 import sys
 import tempfile
 
