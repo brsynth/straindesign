@@ -5,7 +5,7 @@ import os
 from straindesign._version import __app_name__, __version__
 from straindesign.io import sbml
 from straindesign.medium import associate_flux_env, load_medium
-from straindesign.metabolic import gene_ko, gene_ou, reduce_model
+from straindesign.metabolic import gene_ko, gene_ou, plot_pareto, reduce_model
 from straindesign.preprocess import (
     build_model,
     genes_annotate,
@@ -13,6 +13,7 @@ from straindesign.preprocess import (
     save_results,
 )
 from straindesign.utils import cmdline
+from straindesign.utils import model as utils_model
 
 AP = argparse.ArgumentParser(
     description=__app_name__ + " provides a cli interface to predict gene knockout "
@@ -304,25 +305,47 @@ def _cmd_ana_mod(args):
     cmdline.check_output_file(parser=AP, path=args.output_pareto_png)
 
     # Load model.
-    model = sbml.from_sbml(path=args.input_model_file)
+    logging.info("Build model")
+    if args.input_pathway_file:
+        model = build_model(
+            model_path=args.input_model_file,
+            pathway_path=args.input_pathway_file,
+            biomass_id=args.biomass_rxn_id,
+            target_id=args.target_rxn_id,
+        )
+    else:
+        model = sbml.from_sbml(path=args.input_model_file)
+
+    if model is None:
+        cmdline.abort(AP, "An error occured when the model was loaded")
 
     # Medium.
-    logging.info("Build medium")
-    envcond = load_medium(path=args.input_medium_file)
-    model = associate_flux_env(model=model, envcond=envcond)
-    if model is None:
-        cmdline.abort(AP, "An error occured when the pathway was merged to the model")
+    if args.input_medium_file:
+        logging.info("Build medium")
+        envcond = load_medium(path=args.input_medium_file)
+        model = associate_flux_env(model=model, envcond=envcond)
+        if model is None:
+            cmdline.abort(
+                AP, "An error occured when the pathway was merged to the model"
+            )
 
     # Check reactions.
-    for rxn in [args.biomass_rxn_id, args.target_rxn_id]:
-        if utils_model(model=model, reaction=rxn):
+    rxns = [args.biomass_rxn_id, args.target_rxn_id]
+    if args.substrate_rxn_id:
+        rxns.append(args.substrate_rxn_id)
+    for rxn in rxns:
+        if not utils_model.has_reaction(model=model, reaction=rxn):
             cmdline.abort(AP, "Reaction is not found in the model: %s" % (rxn,))
 
-    # Build pareto.
-
-    "--biomass-rxn-id",
-    "--target-rxn-id",
-    "--output-pareto-png",
+    # Plot pareto.
+    logging.info("Plot pareto")
+    plot_pareto(
+        model=model,
+        path=args.output_pareto_png,
+        biomass_rxn_id=args.biomass_rxn_id,
+        target_rxn_id=args.target_rxn_id,
+        substrate_rxn_id=args.substrate_rxn_id,
+    )
 
     logging.info("End - analysing-model")
 
@@ -331,37 +354,34 @@ P_ana_mod = AP_subparsers.add_parser("analyzing-model", help=_cmd_ana_mod.__doc_
 # Input
 P_ana_mod_input = P_ana_mod.add_argument_group("Input")
 P_ana_mod_input.add_argument(
-    "--input-model-file", type=str, required=True, help="GEM model file (SBML)"
+    "--input-model-file", required=True, help="GEM model file (SBML)"
 )
 P_ana_mod_input.add_argument(
-    "--biomass-rxn-id",
-    type=str,
-    required=True,
-    help="Biomass reaction ID",
+    "--input-pathway-file", help="SBML file that contains an heterologous pathway"
 )
 P_ana_mod_input.add_argument(
-    "--target-rxn-id",
-    type=str,
-    help="Target reaction ID",
+    "--biomass-rxn-id", required=True, help="Biomass reaction ID"
+)
+P_ana_mod_input.add_argument(
+    "--target-rxn-id", required=True, help="Target reaction ID"
+)
+P_ana_mod_input.add_argument(
+    "--substrate-rxn-id", help="Substracte reaction ID (eg. carbon source)"
 )
 # Output
 P_ana_mod_output = P_ana_mod.add_argument_group("Output")
-P_ana_mod_output.add_argument(
-    "--output-pareto-png",
-    type=str,
-    help="Output pareto file (PNG)",
-)
+P_ana_mod_output.add_argument("--output-pareto-png", help="Output pareto file (PNG)")
 # Parameters - Medium
 P_ana_mod_medium = P_ana_mod.add_argument_group("Medium")
 P_ana_mod_medium.add_argument(
     "--input-medium-file",
-    type=str,
     help="Provide a csv or tsv file with an header as <coumpond_id>,"
     "<lower_bound>, <upper_bound>. This file "
     "provides information about metabolites (Metanetx Id) "
     "to add or remove.",
 )
 P_ana_mod.set_defaults(func=_cmd_ana_mod)
+
 
 # Version.
 def print_version(_args):

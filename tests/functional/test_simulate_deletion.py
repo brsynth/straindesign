@@ -22,6 +22,7 @@ class TestSimulateDeletion(Main_test):
             args += ["--output-file-csv", fd.name]
             args += ["--strategy", "ko"]
             args += ["--max-knockouts", "3"]
+            args += ["--max-time", "10"]
             args += ["--input-medium-file", self.medium_butanol_csv]
             args += ["--thread", "1"]
 
@@ -148,6 +149,7 @@ class TestSimulateDeletion(Main_test):
             args += ["--output-file-csv", fd.name]
             args += ["--strategy", "ou"]
             args += ["--max-knockouts", "3"]
+            args += ["--max-time", "10"]
             args += ["--input-medium-file", self.medium_butanol_tsv]
             args += ["--thread", "1"]
 
