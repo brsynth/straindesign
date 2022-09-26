@@ -9,5 +9,7 @@ dependencies:
   - cobra<0.25.0
   - markupsafe==2.0.1
   - pandas
+  - plotly
   - pytest
+  - python-kaleido
   - pyyaml

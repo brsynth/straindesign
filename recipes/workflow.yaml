@@ -1,0 +1,15 @@
+name: test
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - build
+  - conda-build
+  - coverage
+  - pytest
+  - pytest-cov
+  - python
+  - pyyaml
+  - tox
+  - tox-conda

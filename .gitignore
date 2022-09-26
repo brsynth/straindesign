@@ -20,3 +20,4 @@ super-linter.log
 .eggs
 build
 debug
+.tox

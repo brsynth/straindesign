@@ -138,12 +138,11 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: main
 
-  BuildPip:
-    needs: Commit
+  BuildConda:
+    needs: [Commit, Tag]
     runs-on: ubuntu-latest
     env:
-      bld_path: /tmp/build
-      asset: pip.zip
+      asset: straindesign-${{ needs.Tag.outputs.tag }}-py_0.tar.bz2
     outputs:
       asset: ${{ env.asset }}
     defaults:
@@ -158,74 +157,30 @@ jobs:
         uses: conda-incubator/setup-miniconda@v2
         with:
           miniconda-version: "latest"
-          environment-file: conda.recipes/conda_build_env.yaml
+          environment-file: recipes/workflow.yaml
           python-version: '3.9'
-      - name: 'Build pip package'
+      - name: 'Build conda package'
         run: |
-          python3 -m build --outdir ${bld_path}
-      - name: 'Create asset'
-        run: |
-          zip -r -j ${asset} ${bld_path}
+          conda-build recipes --output-folder . --output "${{ env.asset }}"
       - name: 'Upload Artifact Package'
         uses: actions/upload-artifact@v2
         with:
-          name: package-pip-artifact
+          name: package-conda-artifact
           path: ${{ env.asset }}
           retention-days: 1
           if-no-files-found: error
 
   Release:
-    needs: [Tag, BuildPip]
+    needs: [Tag, BuildConda]
     runs-on: ubuntu-latest
     steps:
       - name: 'Download Artifact Package - Pip'
         uses: actions/download-artifact@v2
         with:
-          name: package-pip-artifact
+          name: package-conda-artifact
       - name: 'Create Release'
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ needs.Tag.outputs.tag }}
           body: ${{ needs.Tag.outputs.changelog }}
-          files: ${{ needs.BuildPip.outputs.asset }}
-
-  Docker:
-    needs: [Tag, BuildPip]
-    runs-on: ubuntu-latest
-    permissions:
-      packages: write
-      contents: read
-    steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v2
-        with:
-          ref: stable
-      - name: 'Download Artifact Package - Pip'
-        uses: actions/download-artifact@v2
-        with:
-          name: package-pip-artifact
-      - name: 'Unzip pip artifact'
-        run: |
-          echo "list directory"
-          ls
-          unzip pip.zip
-          echo "list directory"
-          ls
-      - name: 'Define Image name'
-        run: |
-          image_name=${{ github.repository }}
-          image_name=$(echo "$image_name" | cut -f2 -d"/" | tr '[:upper:]' '[:lower:]')
-          echo "image_name=$image_name" >> "$GITHUB_ENV"
-      - name: 'Build image'
-        run: |
-          docker build . --file Dockerfile --tag ${{ env.image_name }} --label "runnumber=${GITHUB_RUN_ID}"
-      - name: 'Log in to registry'
-        run: |
-          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-      - name: 'Push image'
-        run: |
-          IMAGE_ID=$(echo ghcr.io/${{ github.repository_owner }}/${{ env.image_name }} | tr '[:upper:]' '[:lower:]')
-          VERSION=${{ needs.Tag.outputs.tag }}
-          echo "IMAGE_ID=$IMAGE_ID | VERSION=$VERSION"
-          docker tag ${{ env.image_name }} "${IMAGE_ID}:${VERSION}"
-          docker push "${IMAGE_ID}:${VERSION}"
+          files: ${{ needs.BuildConda.outputs.asset }}
