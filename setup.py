@@ -12,7 +12,7 @@ with open(fversion) as fid:
 
 # App name - dependencies
 env = {}
-with open("environment.yml") as fid:
+with open("recipes/workflow.yaml") as fid:
     env = yaml.safe_load(fid)
 name = env["name"]
 install_requires = []

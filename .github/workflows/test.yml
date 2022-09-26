@@ -33,6 +33,9 @@ jobs:
   Pytest:
     needs: [Build]
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9]
     defaults:
       run:
         shell: bash -l {0}
@@ -46,10 +49,11 @@ jobs:
         with:
           miniconda-version: "latest"
           environment-file: recipes/workflow.yaml
+          python-version: ${{ matrix.python-version }}
       - name: 'Run tests'
         run: |
-          conda env list
-          tox -e py37, py38
+          pip install --no-deps .
+          python -m pytest tests/unit
 
   Coverage:
     needs: [Build]
@@ -67,9 +71,11 @@ jobs:
         with:
           miniconda-version: "latest"
           environment-file: recipes/workflow.yaml
+          python-version: '3.9'
       - name: 'Run tests'
         run: |
-          tox -e py39
+          pip install --no-deps .
+          coverage run -m pytest
           coverage lcov
       - name: 'Coveralls'
         uses: coverallsapp/github-action@master
