@@ -1,35 +1,17 @@
 name: Tests
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
 
-  Lint:
-    runs-on: ubuntu-latest
-    steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v2
-        with:
-          ref: ${{ github.ref }}
-          fetch-depth: 0
-      - name: Lint Code Base
-        uses: github/super-linter@v4
-        env:
-          VALIDATE_ALL_CODEBASE: false
-          VALIDATE_YAML: false
-          VALIDATE_XML: false
-          VALIDATE_DOCKERFILE_HADOLINT: false
-          DEFAULT_BRANCH: main
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
   Build:
-    runs-on: ${{ matrix.os }}-latest
-    strategy:
-      matrix:
-        os: ["ubuntu"]
-        python-version: ['3.8', '3.9']
-    env:
-      bld_path: /tmp/build
+    runs-on: ubuntu-latest
     defaults:
       run:
         shell: bash -l {0}
@@ -41,38 +23,62 @@ jobs:
       - name: 'Deploying miniconda'
         uses: conda-incubator/setup-miniconda@v2
         with:
-          miniconda-version: 'latest'
-          environment-file: conda.recipes/conda_build_env.yaml
-          python-version: ${{ matrix.python-version }}
-      - name: 'Set up output folder'
+          miniconda-version: "latest"
+          environment-file: recipes/workflow.yaml
+          python-version: '3.9'
+      - name: 'Build conda package'
         run: |
-          mkdir -p "${bld_path}"
-      - name: 'Build pip package'
-        run: |
-          python3 -m build --outdir "${bld_path}"
+          conda-build recipes/
 
   Pytest:
     needs: [Build]
-    runs-on: ${{ matrix.os }}-latest
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ['3.8', '3.9']
-        os: [ubuntu, macos]
-    env:
-      bld_path: /tmp/build
+        python-version: [3.8, 3.9]
+    defaults:
+      run:
+        shell: bash -l {0}
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
         with:
           ref: ${{ github.ref }}
-      - name: 'Set up Python'
-        uses: actions/setup-python@v2
+      - name: 'Deploying miniconda'
+        uses: conda-incubator/setup-miniconda@v2
         with:
+          miniconda-version: "latest"
+          environment-file: recipes/workflow.yaml
           python-version: ${{ matrix.python-version }}
-      - name: 'Install'
+      - name: 'Run tests'
         run: |
-          pip install .
-      - name: 'Run pytest'
+          pip install --no-deps .
+          python -m pytest tests/unit
+
+  Coverage:
+    needs: [Build]
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -l {0}
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.ref }}
+      - name: 'Deploying miniconda'
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          miniconda-version: "latest"
+          environment-file: recipes/workflow.yaml
+          python-version: '3.9'
+      - name: 'Run tests'
         run: |
-          pip install pytest
-          python -m pytest
+          pip install --no-deps .
+          coverage run -m pytest
+          coverage lcov
+      - name: 'Coveralls'
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path-to-lcov: ./coverage.lcov

@@ -1,12 +1,11 @@
-import logging
 from collections import OrderedDict
 
 from cameo import load_model
-from main_test import Main_test
 from straindesign.medium import associate_flux_env, load_medium
+from tests.main_test import Main_test
 
 
-class Test_functional(Main_test):
+class TestMedium(Main_test):
     def test_load_medium(self):
         medium = load_medium(self.medium_butanol_csv)
         theorical_medium = OrderedDict(
@@ -23,7 +22,6 @@ class Test_functional(Main_test):
         associate_flux_env(
             model=model,
             envcond=medium,
-            logger=logging.getLogger(),
         )
         self.assertEqual(model.reactions.get_by_id("EX_glc__D_e").bounds, (-10.0, 10.0))
         self.assertEqual(model.reactions.get_by_id("EX_o2_e").bounds, (-5.0, 5.0))

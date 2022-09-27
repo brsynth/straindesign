@@ -1,0 +1,27 @@
+name: test
+channels:
+  - conda-forge
+  - plotly
+  - bioconda
+  - defaults
+dependencies:
+  # straindesign.
+  - biopython
+  - cameo
+  - cobra<0.25.0
+  - markupsafe==2.0.1
+  - pandas
+  - plotly
+  - python-kaleido
+  - python
+  - pyyaml
+  # build.
+  - build
+  - conda-build
+  - coverage
+  - pytest
+  - pytest-cov
+  - python
+  - pyyaml
+  - tox
+  - tox-conda

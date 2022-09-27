@@ -17,3 +17,8 @@ class Main_test(unittest.TestCase):
     # Pathway.
     pathway_path = os.path.join(dataset_path, "pathway")
     pathway_butanol = os.path.join(pathway_path, "butanol.xml")
+    # Gene.
+    gene_path = os.path.join(dataset_path, "gene")
+    gene_butanol = os.path.join(gene_path, "simulate_deletion.butanol.iAF1260.csv")
+    gene_value_error = os.path.join(gene_path, "gene.value_error.csv")
+    gene_empty = os.path.join(gene_path, "gene.empty.csv")

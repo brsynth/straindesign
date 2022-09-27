@@ -10,68 +10,65 @@
 
 ## Installation
 
-### Conda
-
 ```sh
 conda install -c bioconda straindesign
 ```
 
-### Docker
-
-```sh
-docker pull ghcr.io/brsynth/straindesign:<release version>
-```
-
-### Pip
-
-Download asset from the last *Releases*.  
-
-* Unzip asset  
-
-```sh
-unzip <folder>
-```  
-
-* Install *wheel* with *pip*  
-
-```sh
-pip install <unzipped file>.whl
-```  
-
 ## Usage
 
-Example: Define the best combination of genes deletion to optimize a target.
+### Define the best combination of genes deletion to optimize a target.
 
 ```sh
-python -m straindesign \
+python -m straindesign simulate-deletion \
     [input files]
     --input-model-file <SBML file>
     --input-pathway-file <SBML file>
-    --input-medium-file <CSV file>
-    [input parameters]
+    --input-medium-file <CSV/TSV file>
+    [parameters]
     --biomass-rxn-id <id reaction, str>
     --target-rxn-id <id reaction, str>
     --substrate-rxn-id <id reaction, str>
     [output file]
-    --output-file <CSV file>
+    --output-file <CSV/TSV file>
 ```
 
-Or with docker:  
+### Delete genes in a model
 
 ```sh
-docker run \
-    -it \
-    --rm \
-    -v $PWD:/data \
-    straindesign:latest \
-    --input-model /data/<SBML file> \
-    --input-pathway-file /data/<SBML file> \
-    --input-medium-file /data/<CSV file> \
-    --biomass-rxn-id <id reaction, str> \
-    --target-rxn-id <id reaction, str> \
-    --substrate-rxn-id <id reaction, str>
-    --output-file /data/<CSV file>
+python -m straindesign reduce-model \
+    [input files]
+    --input-model-file <SBML file>
+    --input-straindesign-file <CSV file>
+    and/or
+    --input-gene-str <id gene, str>
+    [parameters]
+    --parameter-strategy-str <yield-max, gene-max, gene-min>
+    [output file]
+    --output-file-sbml <SBML file>
 ```
+You can provide a list of genes to delete in the model or the file produced by the command `simulate-deletion`.
+If this file is provided, the combination of genes is choosen among three strategies:
+* yield-max: genes are sorted by the best yield
+* gene-max: the combination of the maximum number of genes
+* gene-min: the combination of the minimum number of genes
+
+### Produce a pareto plot
+
+````sh
+python -m straindesign analyzing-model \
+    [input files]
+    --input-model-file <SBML file>
+    --input-medium-file <CSV/TSV file>
+    --input-pathway-file <SBML file>
+    [parameters]
+    --biomass-rxn-id <id reaction, str>
+    --target-rxn-id <id reaction, str>
+    --substrate-rxn-id <id reaction, str>
+    [output file]
+    --output-pareto-png <PNG file>
+```
+You can provide an heterologous pathway to implement the metabolic pathway producing the targeted compound represented by the `target-rxn-id`, the reaction which produces this compound.  
+The `substrate-rxn-id` argument lets you to choose the main carbon source.
 
 ## Tests
 
