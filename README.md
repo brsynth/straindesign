@@ -16,7 +16,7 @@ conda install -c bioconda straindesign
 
 ## Usage
 
-### Define the best combination of genes deletion to optimize a target.
+### Define the best combination of genes deletion to optimize a target
 
 ```sh
 python -m straindesign simulate-deletion \
@@ -46,8 +46,10 @@ python -m straindesign reduce-model \
     [output file]
     --output-file-sbml <SBML file>
 ```
+
 You can provide a list of genes to delete in the model or the file produced by the command `simulate-deletion`.
 If this file is provided, the combination of genes is choosen among three strategies:
+
 * yield-max: genes are sorted by the best yield
 * gene-max: the combination of the maximum number of genes
 * gene-min: the combination of the minimum number of genes
