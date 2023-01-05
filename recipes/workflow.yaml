@@ -21,6 +21,7 @@ dependencies:
   - networkx
   - numexpr
   - numpy<1.24 # Related to https://github.com/numpy/numpy/pull/22607
+  - openbabel
   - openpyxl
   - optlang
   - ordered-set
