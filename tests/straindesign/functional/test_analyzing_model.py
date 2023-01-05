@@ -9,7 +9,7 @@ from tests.straindesign.main_test import Main_test
 
 class TestAnalyzingModel(Main_test):
     def test_base(self):
-        with tempfile.NamedTemporaryFile() as fd:
+        with tempfile.NamedTemporaryFile(suffix=".png") as fd:
             args = ["python", "-m", __app_name__, "analyzing-model"]
             args += ["--input-model-file", self.model_ecoli_gz]
             args += ["--biomass-rxn-id", "BIOMASS_Ec_iAF1260_core_59p81M"]
@@ -25,7 +25,7 @@ class TestAnalyzingModel(Main_test):
             self.assertEqual(imghdr.what(fd.name), "png")
 
     def test_medium(self):
-        with tempfile.NamedTemporaryFile() as fd:
+        with tempfile.NamedTemporaryFile(suffix=".png") as fd:
             args = ["python", "-m", __app_name__, "analyzing-model"]
             args += ["--input-model-file", self.model_ecoli_gz]
             args += ["--biomass-rxn-id", "BIOMASS_Ec_iAF1260_core_59p81M"]
@@ -42,7 +42,7 @@ class TestAnalyzingModel(Main_test):
             self.assertEqual(imghdr.what(fd.name), "png")
 
     def test_pathway(self):
-        with tempfile.NamedTemporaryFile() as fd:
+        with tempfile.NamedTemporaryFile(suffix=".png") as fd:
             args = ["python", "-m", __app_name__, "analyzing-model"]
             args += ["--input-model-file", self.model_ecoli_gz]
             args += ["--biomass-rxn-id", "BIOMASS_Ec_iAF1260_core_59p81M"]
@@ -60,7 +60,7 @@ class TestAnalyzingModel(Main_test):
             self.assertEqual(imghdr.what(fd.name), "png")
 
     def test_substrate(self):
-        with tempfile.NamedTemporaryFile() as fd:
+        with tempfile.NamedTemporaryFile(suffix=".png") as fd:
             args = ["python", "-m", __app_name__, "analyzing-model"]
             args += ["--input-model-file", self.model_ecoli_gz]
             args += ["--biomass-rxn-id", "BIOMASS_Ec_iAF1260_core_59p81M"]
