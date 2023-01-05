@@ -16,7 +16,6 @@ dependencies:
   - IProgress
   - lazy-object-proxy
   - plotly
-  - python
   - markupsafe
   - networkx
   - numexpr
@@ -26,6 +25,10 @@ dependencies:
   - ordered-set
   - palettable
   - pandas
+  - pytest
+  - pytest-cov
+  - pytest-benchmark
+  - redis
   - requests
   - scipy
   - seaborn

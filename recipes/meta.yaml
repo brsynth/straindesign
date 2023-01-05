@@ -41,6 +41,7 @@ requirements:
     - ordered-set
     - palettable
     - pandas
+    - redis
     - requests
     - scipy
     - seaborn
