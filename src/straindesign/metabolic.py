@@ -4,11 +4,10 @@ from typing import List, Optional
 import cameobrs
 import cobra
 import pandas as pd
-import plotly
 from cameobrs.flux_analysis.simulation import lmoma
 from cameobrs.strain_design.deterministic.linear_programming import OptKnock
 from cameobrs.strain_design.heuristic.evolutionary_based import OptGene
-from cameobrs.visualization.plotting.with_plotly import PlotlyPlotter
+from cameobrs.visualization.plotting.with_seaborn import SeabornPlotter
 from cobra.core.model import Model
 
 
@@ -130,7 +129,7 @@ def plot_pareto(
     # Init.
     abp = cameobrs.visualization.plotting.abstract.AbstractPlotter()
     grid = abp.grid()
-    plotter = PlotlyPlotter()
+    plotter = SeabornPlotter()
 
     # Create graph.
     result = cameobrs.phenotypic_phase_plane(
@@ -142,5 +141,4 @@ def plot_pareto(
     result.plot(plotter, grid=grid)
 
     # Export graph.
-    fig = dict(data=grid.plots[0].data[0], layout=grid.plots[0].layout)
-    plotly.io.write_image(fig=fig, file=path, format="png", engine="orca")
+    grid.plots[0].figure.savefig(path)
