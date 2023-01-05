@@ -9,6 +9,7 @@ dependencies:
   - blessings
   - click
   - cobra>=0.24
+  - conda-build
   - escher
   - future
   - gnomic
@@ -28,7 +29,7 @@ dependencies:
   - pytest
   - pytest-cov
   - pytest-benchmark
-  - redis
+  - redis-py
   - requests
   - scipy
   - seaborn

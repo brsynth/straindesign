@@ -41,17 +41,12 @@ requirements:
     - ordered-set
     - palettable
     - pandas
-    - redis
+    - redis-py
     - requests
     - scipy
     - seaborn
 
 test:
-  source_files:
-    - tests
-  requires:
-    - pytest
-    - pytest-benchmark
   imports:
     - {{ name }}
   commands:

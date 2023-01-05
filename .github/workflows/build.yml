@@ -31,7 +31,7 @@ jobs:
           TAG: ${{ steps.tag_raw.outputs.new_tag }}
         run: |
           TAG=$(echo "$TAG" | cut -f1 -d "-")
-          echo "::set-output name=tag::$TAG"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
 
   Changelog:
     runs-on: ubuntu-latest
@@ -79,8 +79,8 @@ jobs:
           VERSION_PATH=$(find . -name _version.py | head -n 1)
           VERSION_DIR=$(dirname "$VERSION_PATH")
           sed -i "2s/.*/__version__ = \"$TAG\"/" "$VERSION_PATH"
-          echo "::set-output name=version_path::${VERSION_PATH}"
-          echo "::set-output name=version_dir::${VERSION_DIR}"
+          echo "version_path=$VERSION_PATH" >> "$GITHUB_OUTPUT"
+          echo "version_dir=$VERSION_DIR" >> "$GITHUB_OUTPUT"
       - name: 'Upload Artifact Version'
         uses: actions/upload-artifact@v2
         with:
@@ -162,9 +162,11 @@ jobs:
       - name: 'Deploying miniconda'
         uses: conda-incubator/setup-miniconda@v2
         with:
-          miniconda-version: "latest"
           environment-file: recipes/workflow.yaml
           python-version: '3.9'
+          mamba-version: "*"
+          channel-priority: true
+          use-mamba: true
       - name: 'Build conda package'
         run: |
           mkdir -p ${{ env.dirbuild }}
@@ -173,7 +175,7 @@ jobs:
         id: identify_asset
         run: |
           filename=$(find ${{ env.dirbuild }} | head -n 1)
-          echo "::set-output name=asset::${filename}"
+          echo "asset=$filename" >> "$GITHUB_OUTPUT"
       - name: 'Upload Artifact Package'
         uses: actions/upload-artifact@v2
         with:
