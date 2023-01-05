@@ -32,14 +32,6 @@ jobs:
         run: |
           TAG=$(echo "$TAG" | cut -f1 -d "-")
           echo "::set-output name=tag::$TAG"
-      - name: 'Bump version and push tag'
-        id: tag
-        uses: mathieudutour/github-tag-action@v6.0
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          release_branches: stable
-          custom_tag: ${{ steps.tag_label.outputs.tag }}
-          tag_prefix:
 
   Changelog:
     runs-on: ubuntu-latest

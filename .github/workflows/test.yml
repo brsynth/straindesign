@@ -53,7 +53,8 @@ jobs:
       - name: 'Run tests'
         run: |
           pip install --no-deps .
-          python -m pytest tests/unit
+          python -m pytest tests/straindesign/unit
+          python -m pytest tests/cameobrs
 
   Coverage:
     needs: [Build]
