@@ -71,8 +71,6 @@ if find_module("matplotlib") and in_ipnb():
 
 system_info = get_system_info()
 
-from cameobrs._version import __version__
-
 from cameobrs import models
 from cameobrs.io import load_model
 
