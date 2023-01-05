@@ -1,1 +1,8 @@
+include MANIFEST.in
+include LICENSE
+include README
 graft recipes
+graft src/cameobrs/ui/assets
+graft src/cameobrs/data
+graft src/cameobrs/models
+graft tests

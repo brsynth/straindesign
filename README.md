@@ -6,7 +6,8 @@
 
 ## Description
 
-*straindesign* provides a cli interface to predict gene knockout targets with an heterologous pathway  
+*straindesign* provides a cli interface to predict gene knockout targets with an heterologous pathway.
+Integrate an hard fork from [cameo](https://github.com/biosustain/cameo) (v0.13.6) named `cameobrs` to add features.
 
 ## Installation
 
@@ -16,7 +17,7 @@ conda install -c bioconda straindesign
 
 ## Usage
 
-### Define the best combination of genes deletion to optimize a target.
+### Define the best combination of genes deletion to optimize a target
 
 ```sh
 python -m straindesign simulate-deletion \
@@ -46,8 +47,10 @@ python -m straindesign reduce-model \
     [output file]
     --output-file-sbml <SBML file>
 ```
+
 You can provide a list of genes to delete in the model or the file produced by the command `simulate-deletion`.
 If this file is provided, the combination of genes is choosen among three strategies:
+
 * yield-max: genes are sorted by the best yield
 * gene-max: the combination of the maximum number of genes
 * gene-min: the combination of the minimum number of genes
@@ -79,16 +82,6 @@ cd <repository>
 python -m pytest
 ```
 
-## Built with these main libraries
+## Built with:
 
-* [cameo](https://github.com/biosustain/cameo) - Computer aided metabolic engineering & optimization
 * [cobrapy](https://github.com/opencobra/cobrapy) - Constraint-based modeling of metabolic networks
-* [Pandas](https://github.com/pandas-dev/pandas) - Essential dataframe object
-
-## Authors
-
-* **Guillaume Gricourt**
-
-## Licence
-
-See the LICENCE file for details.
