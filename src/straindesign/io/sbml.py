@@ -1,9 +1,9 @@
-import cameo
+import cameobrs
 import cobra
 
 
 def from_sbml(path: str) -> cobra.Model:
-    return cameo.load_model(path)
+    return cameobrs.load_model(path)
 
 
 def to_sbml(model: cobra.Model, path: str) -> None:

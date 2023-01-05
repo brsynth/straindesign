@@ -1,14 +1,14 @@
 import logging
 from typing import List, Optional
 
-import cameo
+import cameobrs
 import cobra
 import pandas as pd
 import plotly
-from cameo.flux_analysis.simulation import lmoma
-from cameo.strain_design.deterministic.linear_programming import OptKnock
-from cameo.strain_design.heuristic.evolutionary_based import OptGene
-from cameo.visualization.plotting.with_plotly import PlotlyPlotter
+from cameobrs.flux_analysis.simulation import lmoma
+from cameobrs.strain_design.deterministic.linear_programming import OptKnock
+from cameobrs.strain_design.heuristic.evolutionary_based import OptGene
+from cameobrs.visualization.plotting.with_plotly import PlotlyPlotter
 from cobra.core.model import Model
 
 
@@ -128,12 +128,12 @@ def plot_pareto(
     substrate_rxn_id: Optional[str] = None,
 ) -> None:
     # Init.
-    abp = cameo.visualization.plotting.abstract.AbstractPlotter()
+    abp = cameobrs.visualization.plotting.abstract.AbstractPlotter()
     grid = abp.grid()
     plotter = PlotlyPlotter()
 
     # Create graph.
-    result = cameo.phenotypic_phase_plane(
+    result = cameobrs.phenotypic_phase_plane(
         model,
         variables=[model.reactions.get_by_id(biomass_rxn_id)],
         objective=model.reactions.get_by_id(target_rxn_id),
@@ -143,4 +143,4 @@ def plot_pareto(
 
     # Export graph.
     fig = dict(data=grid.plots[0].data[0], layout=grid.plots[0].layout)
-    plotly.io.write_image(fig=fig, file=path, format="png", engine="kaleido")
+    plotly.io.write_image(fig=fig, file=path, format="png", engine="orca")
