@@ -1,8 +1,8 @@
 from collections import OrderedDict
 
-from cameo import load_model
+from cameobrs import load_model
 from straindesign.medium import associate_flux_env, load_medium
-from tests.main_test import Main_test
+from tests.straindesign.main_test import Main_test
 
 
 class TestMedium(Main_test):

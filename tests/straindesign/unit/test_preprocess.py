@@ -2,7 +2,7 @@ from straindesign.preprocess import (
     build_model,
     load_straindesign_simulate_deletion,
 )
-from tests.main_test import Main_test
+from tests.straindesign.main_test import Main_test
 
 
 class TestPreprocess(Main_test):

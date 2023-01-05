@@ -6,7 +6,7 @@ from straindesign._version import __app_name__
 from straindesign.io import sbml
 from straindesign.utils import cmd
 from straindesign.utils import model as utils_model
-from tests.main_test import Main_test
+from tests.straindesign.main_test import Main_test
 
 
 class TestReduceModel(Main_test):
