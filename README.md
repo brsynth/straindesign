@@ -6,7 +6,8 @@
 
 ## Description
 
-*straindesign* provides a cli interface to predict gene knockout targets with an heterologous pathway  
+*straindesign* provides a cli interface to predict gene knockout targets with an heterologous pathway.
+Integrate an hard fork from [cameo](https://github.com/biosustain/cameo) (v0.13.6) named `cameobrs` to add features.
 
 ## Installation
 
@@ -81,16 +82,6 @@ cd <repository>
 python -m pytest
 ```
 
-## Built with these main libraries
+## Built with:
 
-* [cameo](https://github.com/biosustain/cameo) - Computer aided metabolic engineering & optimization
 * [cobrapy](https://github.com/opencobra/cobrapy) - Constraint-based modeling of metabolic networks
-* [Pandas](https://github.com/pandas-dev/pandas) - Essential dataframe object
-
-## Authors
-
-* **Guillaume Gricourt**
-
-## Licence
-
-See the LICENCE file for details.

@@ -6,7 +6,7 @@ from typing import Dict, List
 
 import pandas as pd
 from Bio import Entrez
-from cameo import load_model
+from cameobrs import load_model
 from cobra.core.model import Model
 from straindesign._version import __app_name__
 from straindesign.io import tabulate
