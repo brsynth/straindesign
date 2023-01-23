@@ -57,7 +57,7 @@ If this file is provided, the combination of genes is choosen among three strate
 
 ### Produce a pareto plot
 
-````sh
+```sh
 python -m straindesign analyzing-model \
     [input files]
     --input-model-file <SBML file>
@@ -75,13 +75,10 @@ The `substrate-rxn-id` argument lets you to choose the main carbon source.
 
 ## Tests
 
-*pytest* is installed with this package.
+Requires:
+* *pytest*
+* *pytest-benchmark*
 
 ```sh
-cd <repository>
 python -m pytest
 ```
-
-## Built with:
-
-* [cobrapy](https://github.com/opencobra/cobrapy) - Constraint-based modeling of metabolic networks

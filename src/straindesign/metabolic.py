@@ -141,4 +141,4 @@ def plot_pareto(
     result.plot(plotter, grid=grid)
 
     # Export graph.
-    grid.plots[0].figure.savefig(path)
+    grid.plots[0].figure.savefig(path, format="png")
