@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.2.0](https://github.com/brsynth/straindesign/tree/3.2.0) (2023-01-05)
+
+[Full Changelog](https://github.com/brsynth/straindesign/compare/3.1.0...3.2.0)
+
+**Implemented enhancements:**
+
+- Integrate CameoBrs [\#1](https://github.com/brsynth/straindesign/pull/1) ([guillaume-gricourt](https://github.com/guillaume-gricourt))
+
 ## [3.1.0](https://github.com/brsynth/straindesign/tree/3.1.0) (2022-09-27)
 
 [Full Changelog](https://github.com/brsynth/straindesign/compare/3.0.0...3.1.0)
