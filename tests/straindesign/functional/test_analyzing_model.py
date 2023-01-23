@@ -24,6 +24,22 @@ class TestAnalyzingModel(Main_test):
 
             self.assertEqual(imghdr.what(fd.name), "png")
 
+    def test_galaxy(self):
+        with tempfile.NamedTemporaryFile(suffix=".dat") as fd:
+            args = ["python", "-m", __app_name__, "analyzing-model"]
+            args += ["--input-model-file", self.model_ecoli_gz]
+            args += ["--biomass-rxn-id", "BIOMASS_Ec_iAF1260_core_59p81M"]
+            args += ["--target-rxn-id", "EX_tyrp_e"]
+            args += ["--output-pareto-png", fd.name]
+
+            ret = cmd.run(args)
+            if ret.returncode > 0:
+                print(ret.stderr)
+                print(ret.stdout)
+                sys.exit(1)
+
+            self.assertEqual(imghdr.what(fd.name), "png")
+
     def test_medium(self):
         with tempfile.NamedTemporaryFile(suffix=".png") as fd:
             args = ["python", "-m", __app_name__, "analyzing-model"]
