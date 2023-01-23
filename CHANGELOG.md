@@ -1,5 +1,14 @@
 # Changelog
 
+## [3.2.1](https://github.com/brsynth/straindesign/tree/3.2.1) (2023-01-23)
+
+[Full Changelog](https://github.com/brsynth/straindesign/compare/3.2.0...3.2.1)
+
+**Merged pull requests:**
+
+- chore\(deps\): bump mathieudutour/github-tag-action from 6.0 to 6.1 [\#6](https://github.com/brsynth/straindesign/pull/6) ([dependabot[bot]](https://github.com/apps/dependabot))
+- chore\(deps\): bump actions/upload-artifact from 2 to 3 [\#5](https://github.com/brsynth/straindesign/pull/5) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## [3.2.0](https://github.com/brsynth/straindesign/tree/3.2.0) (2023-01-05)
 
 [Full Changelog](https://github.com/brsynth/straindesign/compare/3.1.0...3.2.0)
