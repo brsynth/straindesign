@@ -19,7 +19,7 @@ jobs:
         shell: bash -l {0}
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.ref }}
       - name: 'Deploying miniconda'
@@ -46,7 +46,7 @@ jobs:
         shell: bash -l {0}
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.ref }}
       - name: 'Deploying miniconda'
@@ -72,7 +72,7 @@ jobs:
         shell: bash -l {0}
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.ref }}
       - name: 'Deploying miniconda'
