@@ -1,4 +1,4 @@
-name: test
+name: straindesign-local
 channels:
   - conda-forge
   - plotly
@@ -8,7 +8,7 @@ dependencies:
   - biopython
   - blessings
   - click
-  - cobra>=0.24
+  - cobra
   - conda-build
   - escher
   - future
@@ -20,10 +20,9 @@ dependencies:
   - markupsafe
   - networkx
   - numexpr
-  - numpy<1.24 # Related to https://github.com/numpy/numpy/pull/22607
+  - numpy
   - openbabel
   - openpyxl
-  - optlang
   - ordered-set
   - palettable
   - pandas

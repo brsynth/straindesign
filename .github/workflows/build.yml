@@ -13,7 +13,7 @@ jobs:
      tag: ${{ steps.tag_label.outputs.tag }}
      changelog: ${{ steps.tag_raw.outputs.changelog }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           persist-credentials: false
           fetch-depth: 0
@@ -36,7 +36,7 @@ jobs:
   Changelog:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           persist-credentials: false
           fetch-depth: 0
@@ -57,7 +57,7 @@ jobs:
           echo "$USER $PROJECT"
           github_changelog_generator --user "$USER" --project "$PROJECT" --no-unreleased
       - name: 'Upload Artifact Changelog'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: changelog-artifact
           path: CHANGELOG.md
@@ -70,7 +70,7 @@ jobs:
       version_path: ${{ steps.update_version.outputs.version_path }}
       version_dir: ${{ steps.update_version.outputs.version_dir }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: 'Update _version.py'
         id: update_version
         env:
@@ -82,7 +82,7 @@ jobs:
           echo "version_path=$VERSION_PATH" >> "$GITHUB_OUTPUT"
           echo "version_dir=$VERSION_DIR" >> "$GITHUB_OUTPUT"
       - name: 'Upload Artifact Version'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: version-artifact
           path: ${{ steps.update_version.outputs.version_path }}
@@ -93,17 +93,17 @@ jobs:
     steps:
       # Get Data
       - name: 'Checkout'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           persist-credentials: false
           fetch-depth: 0
       - name: 'Download Artifact Version'
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: version-artifact
           path: ${{ needs.Version.outputs.version_dir }}
       - name: 'Download Artifact Changelog'
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: changelog-artifact
       # Commit
@@ -133,7 +133,7 @@ jobs:
     needs: [Commit, TagRaw]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           persist-credentials: false
           fetch-depth: 0
@@ -158,9 +158,9 @@ jobs:
         shell: bash -l {0} # activate env conda
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: 'Deploying miniconda'
-        uses: conda-incubator/setup-miniconda@v2
+        uses: conda-incubator/setup-miniconda@v3
         with:
           miniconda-version: "latest"
           environment-file: recipes/workflow.yaml
@@ -178,7 +178,7 @@ jobs:
           filename=$(find ${{ env.dirbuild }} | head -n 1)
           echo "asset=$filename" >> "$GITHUB_OUTPUT"
       - name: 'Upload Artifact Package'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: package-conda-artifact
           path: ${{ steps.identify_asset.outputs.asset }}
@@ -190,7 +190,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 'Download Artifact Package - Pip'
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: package-conda-artifact
       - name: 'Create Release'
