@@ -360,11 +360,7 @@ class DifferentialFVA(StrainDesignMethod):
         ].values
 
         if self.normalize_ranges_by is not None:
-            logger.debug(
-                self.reference_flux_ranges.loc[
-                    self.normalize_ranges_by,
-                ]
-            )
+            logger.debug(self.reference_flux_ranges.loc[self.normalize_ranges_by,])
             # The most obvious flux to normalize by is the biomass reaction
             # flux. This is probably always greater than zero. Just in case
             # the model is defined differently or some other normalizing
@@ -1114,7 +1110,6 @@ class FSEOF(StrainDesignMethod):
                 exclude_ids.append(reaction)
 
         with TimeMachine() as tm:
-
             tm(do=int, undo=partial(setattr, model, "objective", model.objective))
             tm(do=int, undo=partial(setattr, target, "lower_bound", target.lower_bound))
             tm(do=int, undo=partial(setattr, target, "upper_bound", target.upper_bound))
@@ -1228,7 +1223,6 @@ class FSEOFResult(StrainDesignMethodResult):
         *args,
         **kwargs,
     ):
-
         super(FSEOFResult, self).__init__(
             self._generate_designs(reference, enforced_levels, reaction_results),
             *args,
