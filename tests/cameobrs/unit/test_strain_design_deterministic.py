@@ -207,11 +207,11 @@ class TestGrowthCouplingPotential:
         fva = cameobrs.flux_variability_analysis(
             model, fraction_of_optimum=1, remove_cycles=False, reactions=["PFL"]
         )
-        assert fva["lower_bound"][0] <= 0 <= fva["upper_bound"][0]
+        assert fva["lower_bound"].iloc[0] <= 0 <= fva["upper_bound"].iloc[0]
         with model:
             for knockout in knockouts:
                 model.reactions.get_by_id(knockout).knock_out()
             fva = cameobrs.flux_variability_analysis(
                 model, fraction_of_optimum=1, remove_cycles=False, reactions=["PFL"]
             )
-            assert abs(fva["lower_bound"][0]) > 4
+            assert abs(fva["lower_bound"].iloc[0]) > 4
