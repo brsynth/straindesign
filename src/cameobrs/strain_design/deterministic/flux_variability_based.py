@@ -435,7 +435,7 @@ class DifferentialFVA(StrainDesignMethod):
                 results = list(view.map(func_obj, self.grid.iterrows()))
 
         solutions = dict(
-            (tuple(point.iteritems()), fva_result) for (point, fva_result) in results
+            (tuple(point.items()), fva_result) for (point, fva_result) in results
         )
 
         for sol in solutions.values():
@@ -880,7 +880,7 @@ class DifferentialFVAResult(StrainDesignMethodResult):
             reaction_data[numpy.isposinf(reaction_data)] = reaction_data.max()
             reaction_data[numpy.isneginf(reaction_data)] = reaction_data.min()
 
-            reaction_data = dict(reaction_data.iteritems())
+            reaction_data = dict(reaction_data.items())
             reaction_data["max"] = numpy.abs(values).max()
             reaction_data["min"] = -reaction_data["max"]
 
