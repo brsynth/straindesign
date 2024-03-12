@@ -194,7 +194,7 @@ jobs:
         with:
           name: package-conda-artifact
       - name: 'Create Release'
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ needs.TagRaw.outputs.tag }}
           body: ${{ needs.TagRaw.outputs.changelog }}
